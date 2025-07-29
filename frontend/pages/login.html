@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CS2 Loader</title>
+    <meta name="description" content="Sign in to your CS2 Loader account">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">CS2 Loader</span>
+                </a>
+            </div>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="products.html" class="nav-link">Products</a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="register.html" class="btn btn-outline">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-background">
+            <div class="auth-particles"></div>
+            <div class="auth-gradient"></div>
+        </div>
+        
+        <div class="auth-content">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <div class="logo-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <h1 class="auth-title">Welcome Back</h1>
+                    <p class="auth-subtitle">Sign in to your CS2 Loader account</p>
+                </div>
+                
+                <form id="loginForm" class="auth-form" novalidate>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                            </svg>
+                            <input type="email" id="email" name="email" class="form-input" 
+                                   placeholder="Enter your email" required autocomplete="email">
+                        </div>
+                        <div class="form-error" id="emailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"/>
+                            </svg>
+                            <input type="password" id="password" name="password" class="form-input" 
+                                   placeholder="Enter your password" required autocomplete="current-password">
+                            <button type="button" class="input-toggle" onclick="togglePasswordVisibility('password')">
+                                <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/>
+                                </svg>
+                                <svg class="eye-off-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                                    <path d="M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.09L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.76,7.13 11.37,7 12,7Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="form-error" id="passwordError"></div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Remember me</span>
+                        </label>
+                        
+                        <a href="#" class="forgot-link" onclick="showForgotPassword()">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large auth-submit" id="loginBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z"/>
+                        </svg>
+                        Sign In
+                    </button>
+                    
+                    <div class="form-divider">
+                        <span>or</span>
+                    </div>
+                    
+                    <div class="social-login">
+                        <button type="button" class="btn btn-outline social-btn" onclick="showComingSoon('Discord login')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.197.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418Z"/>
+                            </svg>
+                            Continue with Discord
+                        </button>
+                        
+                        <button type="button" class="btn btn-outline social-btn" onclick="showComingSoon('Steam login')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C7.4,22 3.55,18.92 2.36,14.73L6.19,16.31C6.45,17.6 7.6,18.58 9,18.58C10.61,18.58 11.92,17.27 11.92,15.66C11.92,15.1 11.77,14.58 11.5,14.15L15.92,11.23C18.17,11.23 20,9.4 20,7.15C20,4.9 18.17,3.08 15.92,3.08C13.67,3.08 11.85,4.9 11.85,7.15C11.85,7.4 11.88,7.64 11.93,7.88L8.8,10.82C8.38,10.64 7.92,10.54 7.44,10.54C5.83,10.54 4.5,11.87 4.5,13.46C4.5,15.07 5.83,16.4 7.44,16.4L2.36,14.73C2.13,13.86 2,12.95 2,12A10,10 0 0,1 12,2M9,13.46C9,14.27 8.31,14.96 7.5,14.96C6.69,14.96 6,14.27 6,13.46C6,12.65 6.69,11.96 7.5,11.96C8.31,11.96 9,12.65 9,13.46M15.92,9.77C14.67,9.77 13.66,8.76 13.66,7.5C13.66,6.24 14.67,5.23 15.92,5.23C17.17,5.23 18.18,6.24 18.18,7.5C18.18,8.76 17.17,9.77 15.92,9.77Z"/>
+                            </svg>
+                            Continue with Steam
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="register.html" class="auth-link">Sign up here</a></p>
+                </div>
+            </div>
+            
+            <!-- Security Notice -->
+            <div class="security-notice">
+                <div class="security-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.1 16,12.7V16.2C16,16.8 15.4,17.3 14.8,17.3H9.2C8.6,17.3 8,16.8 8,16.2V12.8C8,12.2 8.6,11.7 9.2,11.7V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,9.5V11.5H13.5V9.5C13.5,8.7 12.8,8.2 12,8.2Z"/>
+                    </svg>
+                </div>
+                <div class="security-content">
+                    <h3>Secure Login</h3>
+                    <p>Your login credentials are encrypted and protected with enterprise-grade security.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeForgotPassword()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reset Password</h3>
+                <button onclick="closeForgotPassword()" class="modal-close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Enter your email address and we'll send you a link to reset your password.</p>
+                <form id="forgotPasswordForm" class="forgot-form">
+                    <div class="form-group">
+                        <label for="forgotEmail" class="form-label">Email Address</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                            </svg>
+                            <input type="email" id="forgotEmail" name="forgotEmail" class="form-input" 
+                                   placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-error" id="forgotEmailError"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-large" id="forgotPasswordBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                        </svg>
+                        Send Reset Link
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Signing you in...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    
+    <script>
+        // Login page specific JavaScript
+        class LoginManager {
+            constructor() {
+                this.isLoading = false;
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.checkExistingAuth();
+                this.setupFormValidation();
+            }
+
+            bindEvents() {
+                const loginForm = document.getElementById('loginForm');
+                const forgotForm = document.getElementById('forgotPasswordForm');
+                
+                loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+                forgotForm.addEventListener('submit', (e) => this.handleForgotPassword(e));
+                
+                // Real-time validation
+                document.getElementById('email').addEventListener('blur', () => this.validateEmail());
+                document.getElementById('password').addEventListener('blur', () => this.validatePassword());
+                
+                // Enter key handling
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeForgotPassword();
+                    }
+                });
+            }
+
+            checkExistingAuth() {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    // Check if token is still valid
+                    this.validateTokenAndRedirect(token);
+                }
+            }
+
+            async validateTokenAndRedirect(token) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/auth/validate`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        // Token is valid, redirect to dashboard or intended page
+                        this.redirectAfterLogin();
+                    } else {
+                        // Token is invalid, remove it
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                    }
+                } catch (error) {
+                    console.error('Token validation error:', error);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
+            }
+
+            setupFormValidation() {
+                const inputs = document.querySelectorAll('.form-input');
+                inputs.forEach(input => {
+                    input.addEventListener('input', () => {
+                        this.clearError(input.name);
+                        this.updateInputState(input);
+                    });
+                    
+                    input.addEventListener('focus', () => {
+                        input.parentElement.classList.add('focused');
+                    });
+                    
+                    input.addEventListener('blur', () => {
+                        input.parentElement.classList.remove('focused');
+                        if (input.value) {
+                            input.parentElement.classList.add('has-value');
+                        } else {
+                            input.parentElement.classList.remove('has-value');
+                        }
+                    });
+                });
+            }
+
+            async handleLogin(e) {
+                e.preventDefault();
+                
+                if (this.isLoading) return;
+                
+                const formData = new FormData(e.target);
+                const email = formData.get('email').trim();
+                const password = formData.get('password');
+                const rememberMe = formData.get('rememberMe') === 'on';
+                
+                // Validate form
+                if (!this.validateForm(email, password)) {
+                    return;
+                }
+                
+                try {
+                    this.setLoading(true);
+                    
+                    // Get HWID for hardware locking
+                    const hwid = await this.generateHWID();
+                    
+                    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email,
+                            password,
+                            hwid,
+                            rememberMe
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        // Store auth data
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        
+                        if (rememberMe) {
+                            localStorage.setItem('rememberMe', 'true');
+                        }
+                        
+                        this.showSuccess('Login successful! Redirecting...');
+                        
+                        // Redirect after short delay
+                        setTimeout(() => {
+                            this.redirectAfterLogin();
+                        }, 1000);
+                        
+                    } else {
+                        this.handleLoginError(data.error || 'Login failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('Login error:', error);
+                    this.showError('Login failed. Please check your connection and try again.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            async handleForgotPassword(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(e.target);
+                const email = formData.get('forgotEmail').trim();
+                
+                if (!this.validateEmail(email, 'forgotEmailError')) {
+                    return;
+                }
+                
+                try {
+                    this.setLoading(true, 'Sending reset email...');
+                    
+                    const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        this.showSuccess('Password reset email sent! Check your inbox.');
+                        this.closeForgotPassword();
+                        document.getElementById('forgotPasswordForm').reset();
+                    } else {
+                        this.showError(data.error || 'Failed to send reset email');
+                    }
+                    
+                } catch (error) {
+                    console.error('Forgot password error:', error);
+                    this.showError('Failed to send reset email. Please try again.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            validateForm(email, password) {
+                let isValid = true;
+                
+                if (!this.validateEmail(email)) {
+                    isValid = false;
+                }
+                
+                if (!this.validatePassword(password)) {
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+
+            validateEmail(email = null, errorId = 'emailError') {
+                const emailInput = email || document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (!emailInput) {
+                    this.showFieldError(errorId, 'Email is required');
+                    return false;
+                } else if (!emailRegex.test(emailInput)) {
+                    this.showFieldError(errorId, 'Please enter a valid email address');
+                    return false;
+                } else {
+                    this.clearError(errorId);
+                    return true;
+                }
+            }
+
+            validatePassword(password = null) {
+                const passwordInput = password || document.getElementById('password').value;
+                
+                if (!passwordInput) {
+                    this.showFieldError('passwordError', 'Password is required');
+                    return false;
+                } else if (passwordInput.length < 6) {
+                    this.showFieldError('passwordError', 'Password must be at least 6 characters');
+                    return false;
+                } else {
+                    this.clearError('passwordError');
+                    return true;
+                }
+            }
+
+            showFieldError(fieldId, message) {
+                const errorElement = document.getElementById(fieldId);
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                }
+                
+                // Add error styling to input
+                const inputName = fieldId.replace('Error', '');
+                const input = document.getElementById(inputName);
+                if (input) {
+                    input.classList.add('error');
+                }
+            }
+
+            clearError(fieldName) {
+                const errorElement = document.getElementById(fieldName + 'Error') || document.getElementById(fieldName);
+                if (errorElement) {
+                    errorElement.textContent = '';
+                    errorElement.style.display = 'none';
+                }
+                
+                const input = document.getElementById(fieldName.replace('Error', ''));
+                if (input) {
+                    input.classList.remove('error');
+                }
+            }
+
+            updateInputState(input) {
+                if (input.value) {
+                    input.parentElement.classList.add('has-value');
+                } else {
+                    input.parentElement.classList.remove('has-value');
+                }
+            }
+
+            async generateHWID() {
+                try {
+                    // Generate a unique hardware ID based on browser/system characteristics
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    ctx.textBaseline = 'top';
+                    ctx.font = '14px Arial';
+                    ctx.fillText('HWID Generation', 2, 2);
+                    
+                    const canvasFingerprint = canvas.toDataURL();
+                    const screenInfo = `${screen.width}x${screen.height}x${screen.colorDepth}`;
+                    const timezoneInfo = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    const languageInfo = navigator.language;
+                    const platformInfo = navigator.platform;
+                    
+                    const combined = `${canvasFingerprint}-${screenInfo}-${timezoneInfo}-${languageInfo}-${platformInfo}`;
+                    
+                    // Simple hash function
+                    let hash = 0;
+                    for (let i = 0; i < combined.length; i++) {
+                        const char = combined.charCodeAt(i);
+                        hash = ((hash << 5) - hash) + char;
+                        hash = hash & hash; // Convert to 32bit integer
+                    }
+                    
+                    return Math.abs(hash).toString(36).toUpperCase();
+                } catch (error) {
+                    console.error('HWID generation error:', error);
+                    return 'HWID-' + Date.now().toString(36).toUpperCase();
+                }
+            }
+
+            handleLoginError(error) {
+                if (error.includes('email') || error.includes('credentials')) {
+                    this.showFieldError('emailError', 'Invalid email or password');
+                } else if (error.includes('password')) {
+                    this.showFieldError('passwordError', error);
+                } else if (error.includes('verification')) {
+                    this.showError('Please verify your email address before logging in.');
+                } else if (error.includes('disabled') || error.includes('banned')) {
+                    this.showError('Your account has been disabled. Contact support for assistance.');
+                } else {
+                    this.showError(error);
+                }
+            }
+
+            redirectAfterLogin() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectUrl = urlParams.get('redirect');
+                
+                if (redirectUrl) {
+                    window.location.href = decodeURIComponent(redirectUrl);
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
+            }
+
+            showForgotPassword() {
+                document.getElementById('forgotPasswordModal').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                setTimeout(() => {
+                    document.getElementById('forgotEmail').focus();
+                }, 100);
+            }
+
+            closeForgotPassword() {
+                document.getElementById('forgotPasswordModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+            setLoading(loading, message = 'Signing you in...') {
+                this.isLoading = loading;
+                const overlay = document.getElementById('loadingOverlay');
+                const text = overlay.querySelector('p');
+                const button = document.getElementById('loginBtn');
+                
+                if (loading) {
+                    text.textContent = message;
+                    overlay.style.display = 'flex';
+                    button.disabled = true;
+                    button.innerHTML = `
+                        <div class="spinner-small"></div>
+                        Signing In...
+                    `;
+                } else {
+                    overlay.style.display = 'none';
+                    button.disabled = false;
+                    button.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z"/>
+                        </svg>
+                        Sign In
+                    `;
+                }
+            }
+
+            showError(message) {
+                this.showToast(message, 'error');
+            }
+
+            showSuccess(message) {
+                this.showToast(message, 'success');
+            }
+
+            showToast(message, type = 'info') {
+                // Remove existing toasts
+                const existingToasts = document.querySelectorAll('.toast');
+                existingToasts.forEach(toast => toast.remove());
+                
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                
+                const icons = {
+                    success: '<path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>',
+                    error: '<path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>',
+                    info: '<path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>'
+                };
+                
+                toast.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        ${icons[type] || icons.info}
+                    </svg>
+                    <span>${message}</span>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, type === 'error' ? 6000 : 4000);
+            }
+        }
+
+        // Global functions
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const eyeIcon = input.parentElement.querySelector('.eye-icon');
+            const eyeOffIcon = input.parentElement.querySelector('.eye-off-icon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeOffIcon.style.display = 'block';
+            } else {
+                input.type = 'password';
+                eyeIcon.style.display = 'block';
+                eyeOffIcon.style.display = 'none';
+            }
+        }
+
+        function showForgotPassword() {
+            loginManager.showForgotPassword();
+        }
+
+        function closeForgotPassword() {
+            loginManager.closeForgotPassword();
+        }
+
+        function showComingSoon(feature) {
+            loginManager.showToast(`${feature} coming soon!`, 'info');
+        }
+
+        // Initialize login manager
+        let loginManager;
+        document.addEventListener('DOMContentLoaded', function() {
+            loginManager = new LoginManager();
+        });
+    </script>
+</body>
+</html>
