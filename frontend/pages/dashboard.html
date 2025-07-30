@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CS2 Loader</title>
+    <meta name="description" content="Manage your CS2 Loader subscription and keys">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">CS2 Loader</span>
+                </a>
+            </div>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="products.html" class="nav-link">Products</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="user-menu">
+                    <div class="user-avatar" onclick="toggleUserDropdown()">
+                        <span id="userInitials">U</span>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <span id="userName">User</span>
+                            <span id="userRole" class="user-role">user</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="dashboard.html" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z"/>
+                            </svg>
+                            Dashboard
+                        </a>
+                        <button onclick="showAccountSettings()" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                            </svg>
+                            Account Settings
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button onclick="logout()" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"/>
+                            </svg>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Overview</h3>
+                    <ul class="sidebar-menu">
+                        <li><a href="#overview" class="sidebar-link active" onclick="showSection('overview')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z"/>
+                            </svg>
+                            Dashboard
+                        </a></li>
+                        <li><a href="#subscription" class="sidebar-link" onclick="showSection('subscription')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                            </svg>
+                            Subscription
+                        </a></li>
+                        <li><a href="#keys" class="sidebar-link" onclick="showSection('keys')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7,14A3,3 0 0,0 10,17A3,3 0 0,0 13,14A3,3 0 0,0 10,11A3,3 0 0,0 7,14M12.65,10C11.83,7.67 9.61,6 7,6A6,6 0 0,0 1,12A6,6 0 0,0 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z"/>
+                            </svg>
+                            My Keys
+                        </a></li>
+                        <li><a href="#redeem" class="sidebar-link" onclick="showSection('redeem')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>
+                            </svg>
+                            Redeem Key
+                        </a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Account</h3>
+                    <ul class="sidebar-menu">
+                        <li><a href="#profile" class="sidebar-link" onclick="showSection('profile')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                            </svg>
+                            Profile
+                        </a></li>
+                        <li><a href="#history" class="sidebar-link" onclick="showSection('history')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3"/>
+                            </svg>
+                            History
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="sidebar-stats">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Status</span>
+                            <span class="stat-value" id="quickStatus">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Time Left</span>
+                            <span class="stat-value" id="quickTimeLeft">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Overview Section -->
+            <section id="overview-section" class="dashboard-section active">
+                <div class="section-header">
+                    <h1 class="section-title">Dashboard Overview</h1>
+                    <p class="section-subtitle">Welcome back! Here's your CS2 Loader status</p>
+                </div>
+
+                <!-- Status Cards -->
+                <div class="status-cards">
+                    <div class="status-card subscription-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                                </svg>
+                            </div>
+                            <div class="card-title">Active Subscription</div>
+                        </div>
+                        <div class="card-content" id="subscriptionStatus">
+                            <div class="loading-placeholder">
+                                <div class="skeleton-text"></div>
+                                <div class="skeleton-text short"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="status-card keys-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7,14A3,3 0 0,0 10,17A3,3 0 0,0 13,14A3,3 0 0,0 10,11A3,3 0 0,0 7,14M12.65,10C11.83,7.67 9.61,6 7,6A6,6 0 0,0 1,12A6,6 0 0,0 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z"/>
+                                </svg>
+                            </div>
+                            <div class="card-title">Unredeemed Keys</div>
+                        </div>
+                        <div class="card-content" id="keysStatus">
+                            <div class="loading-placeholder">
+                                <div class="skeleton-text"></div>
+                                <div class="skeleton-text short"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="status-card downloads-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/>
+                                </svg>
+                            </div>
+                            <div class="card-title">CS2 Loader</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="download-info">
+                                <span class="download-version">Version 3.0.1</span>
+                                <span class="download-status">Latest</span>
+                            </div>
+                            <button class="btn btn-primary btn-small" onclick="downloadLoader()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/>
+                                </svg>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h2 class="actions-title">Quick Actions</h2>
+                    <div class="actions-grid">
+                        <button class="action-card" onclick="showSection('redeem')">
+                            <div class="action-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>
+                                </svg>
+                            </div>
+                            <h3>Redeem Key</h3>
+                            <p>Activate a subscription key</p>
+                        </button>
+
+                        <button class="action-card" onclick="window.open('products.html', '_blank')">
+                            <div class="action-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>
+                                </svg>
+                            </div>
+                            <h3>Buy More Time</h3>
+                            <p>Purchase additional keys</p>
+                        </button>
+
+                        <button class="action-card" onclick="showSection('profile')">
+                            <div class="action-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                                </svg>
+                            </div>
+                            <h3>Account Settings</h3>
+                            <p>Manage your profile</p>
+                        </button>
+
+                        <button class="action-card" onclick="window.open('#', '_blank')">
+                            <div class="action-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,2A3,3 0 0,1 15,5V7A3,3 0 0,1 12,10A3,3 0 0,1 9,7V5A3,3 0 0,1 12,2M21,12A1,1 0 0,1 20,13H16L13.5,16.5C13.1,17.4 12.2,18 11.2,18H5V16H11.2A0.5,0.5 0 0,0 11.7,15.5L14.2,12H20A1,1 0 0,1 21,12M2.5,19A1.5,1.5 0 0,0 4,20.5A1.5,1.5 0 0,0 5.5,19A1.5,1.5 0 0,0 4,17.5A1.5,1.5 0 0,0 2.5,19Z"/>
+                                </svg>
+                            </div>
+                            <h3>Get Support</h3>
+                            <p>Contact our support team</p>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Subscription Section -->
+            <section id="subscription-section" class="dashboard-section">
+                <div class="section-header">
+                    <h1 class="section-title">Subscription Status</h1>
+                    <p class="section-subtitle">Manage your active CS2 Loader subscription</p>
+                </div>
+
+                <div class="subscription-details" id="subscriptionDetails">
+                    <!-- Subscription content will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Keys Section -->
+            <section id="keys-section" class="dashboard-section">
+                <div class="section-header">
+                    <h1 class="section-title">My Keys</h1>
+                    <p class="section-subtitle">View and manage your purchased keys</p>
+                </div>
+
+                <div class="keys-container">
+                    <div class="keys-filter">
+                        <button class="filter-btn active" onclick="filterKeys('all')" data-filter="all">All Keys</button>
+                        <button class="filter-btn" onclick="filterKeys('unredeemed')" data-filter="unredeemed">Unredeemed</button>
+                        <button class="filter-btn" onclick="filterKeys('redeemed')" data-filter="redeemed">Redeemed</button>
+                        <button class="filter-btn" onclick="filterKeys('expired')" data-filter="expired">Expired</button>
+                    </div>
+
+                    <div class="keys-list" id="keysList">
+                        <!-- Keys will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Redeem Key Section -->
+            <section id="redeem-section" class="dashboard-section">
+                <div class="section-header">
+                    <h1 class="section-title">Redeem Key</h1>
+                    <p class="section-subtitle">Activate your CS2 Loader subscription key</p>
+                </div>
+
+                <div class="redeem-container">
+                    <div class="redeem-card">
+                        <div class="redeem-instructions">
+                            <h3>How to redeem your key:</h3>
+                            <ol>
+                                <li>Enter your key in the format: XXXX-XXXX-XXXX-XXXX</li>
+                                <li>Your key will be locked to this device's hardware ID</li>
+                                <li>Only one subscription can be active per device</li>
+                                <li>Keys cannot be transferred between devices</li>
+                            </ol>
+                        </div>
+
+                        <form id="redeemForm" class="redeem-form">
+                            <div class="form-group">
+                                <label for="keyCode" class="form-label">Subscription Key</label>
+                                <div class="key-input-wrapper">
+                                    <input type="text" id="keyCode" name="keyCode" class="key-input" 
+                                           placeholder="XXXX-XXXX-XXXX-XXXX" 
+                                           maxlength="19" 
+                                           pattern="[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}"
+                                           required>
+                                    <button type="button" class="paste-btn" onclick="pasteKey()">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+                                        </svg>
+                                        Paste
+                                    </button>
+                                </div>
+                                <div class="form-error" id="keyCodeError"></div>
+                                <div class="form-info">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                                    </svg>
+                                    Your device HWID: <span id="deviceHwid">Generating...</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-large" id="redeemBtn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>
+                                </svg>
+                                Redeem Key
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile-section" class="dashboard-section">
+                <div class="section-header">
+                    <h1 class="section-title">Profile Settings</h1>
+                    <p class="section-subtitle">Manage your account information</p>
+                </div>
+
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <form id="profileForm" class="profile-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profileEmail" class="form-label">Email Address</label>
+                                    <input type="email" id="profileEmail" name="email" class="form-input" readonly>
+                                    <div class="form-info">Email cannot be changed. Contact support if needed.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="accountRole" class="form-label">Account Type</label>
+                                    <input type="text" id="accountRole" name="role" class="form-input" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="memberSince" class="form-label">Member Since</label>
+                                    <input type="text" id="memberSince" name="memberSince" class="form-input" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastLogin" class="form-label">Last Login</label>
+                                    <input type="text" id="lastLogin" name="lastLogin" class="form-input" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Change Password</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="currentPassword" class="form-label">Current Password</label>
+                                        <input type="password" id="currentPassword" name="currentPassword" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPassword" class="form-label">New Password</label>
+                                        <input type="password" id="newPassword" name="newPassword" class="form-input">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline" onclick="changePassword()">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="danger-zone">
+                        <h3>Danger Zone</h3>
+                        <p>These actions cannot be undone.</p>
+                        <button class="btn btn-danger" onclick="showDeleteAccountModal()">Delete Account</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section id="history-section" class="dashboard-section">
+                <div class="section-header">
+                    <h1 class="section-title">Purchase History</h1>
+                    <p class="section-subtitle">View your transaction and subscription history</p>
+                </div>
+
+                <div class="history-container">
+                    <div class="history-filters">
+                        <select id="historyFilter" class="filter-select">
+                            <option value="all">All Transactions</option>
+                            <option value="purchases">Purchases</option>
+                            <option value="redemptions">Key Redemptions</option>
+                            <option value="subscriptions">Subscriptions</option>
+                        </select>
+                        <select id="timeFilter" class="filter-select">
+                            <option value="all">All Time</option>
+                            <option value="30">Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="365">Last Year</option>
+                        </select>
+                    </div>
+
+                    <div class="history-list" id="historyList">
+                        <!-- History items will be loaded here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Key Redemption Success Modal -->
+    <div id="redeemSuccessModal" class="modal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content success-modal">
+            <div class="success-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                </svg>
+            </div>
+            <h3>Key Redeemed Successfully!</h3>
+            <div class="redemption-details" id="redemptionDetails">
+                <!-- Details will be populated -->
+            </div>
+            <div class="success-actions">
+                <button onclick="closeRedeemSuccessModal()" class="btn btn-outline">Close</button>
+                <button onclick="downloadLoader()" class="btn btn-primary">Download CS2 Loader</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Settings Modal -->
+    <div id="accountSettingsModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeAccountSettings()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Account Settings</h3>
+                <button onclick="closeAccountSettings()" class="modal-close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h4>Notifications</h4>
+                    <label class="switch">
+                        <input type="checkbox" id="emailNotifications" checked>
+                        <span class="slider"></span>
+                        <span class="switch-label">Email notifications</span>
+                    </label>
+                    <label class="switch">
+                        <input type="checkbox" id="subscriptionAlerts" checked>
+                        <span class="slider"></span>
+                        <span class="switch-label">Subscription expiry alerts</span>
+                    </label>
+                </div>
+                <div class="settings-section">
+                    <h4>Security</h4>
+                    <button class="btn btn-outline btn-small" onclick="showTwoFactorSetup()">Enable 2FA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Confirmation Modal -->
+    <div id="deleteAccountModal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeDeleteAccountModal()"></div>
+        <div class="modal-content danger-modal">
+            <div class="modal-header">
+                <h3>Delete Account</h3>
+                <button onclick="closeDeleteAccountModal()" class="modal-close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-content">
+                    <div class="warning-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/>
+                        </svg>
+                    </div>
+                    <h4>Are you absolutely sure?</h4>
+                    <p>This action cannot be undone. This will permanently delete your account and remove all associated data including:</p>
+                    <ul>
+                        <li>All subscription keys and history</li>
+                        <li>Account preferences and settings</li>
+                        <li>Purchase history and receipts</li>
+                    </ul>
+                    <div class="confirmation-input">
+                        <label>Type "DELETE" to confirm:</label>
+                        <input type="text" id="deleteConfirmation" class="form-input" placeholder="DELETE">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeDeleteAccountModal()" class="btn btn-outline">Cancel</button>
+                <button onclick="confirmDeleteAccount()" class="btn btn-danger" id="confirmDeleteBtn" disabled>
+                    Delete Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    
+    <script>
+        // Dashboard JavaScript
+        class DashboardManager {
+            constructor() {
+                this.currentSection = 'overview';
+                this.userHwid = null;
+                this.userInfo = null;
+                this.subscriptionData = null;
+                this.keysData = [];
+                this.init();
+            }
+
+            async init() {
+                // Check authentication
+                if (!this.checkAuth()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                this.setupEventListeners();
+                await this.loadUserData();
+                await this.generateHwid();
+                this.updateNavigation();
+                this.startAutoRefresh();
+            }
+
+            checkAuth() {
+                const token = localStorage.getItem('token');
+                const user = localStorage.getItem('user');
+                return token && user;
+            }
+
+            setupEventListeners() {
+                // Key input formatting
+                const keyInput = document.getElementById('keyCode');
+                if (keyInput) {
+                    keyInput.addEventListener('input', this.formatKeyInput);
+                    keyInput.addEventListener('paste', this.handleKeyPaste);
+                }
+
+                // Redeem form
+                const redeemForm = document.getElementById('redeemForm');
+                if (redeemForm) {
+                    redeemForm.addEventListener('submit', (e) => this.handleKeyRedemption(e));
+                }
+
+                // Delete confirmation input
+                const deleteInput = document.getElementById('deleteConfirmation');
+                if (deleteInput) {
+                    deleteInput.addEventListener('input', (e) => {
+                        const confirmBtn = document.getElementById('confirmDeleteBtn');
+                        confirmBtn.disabled = e.target.value !== 'DELETE';
+                    });
+                }
+
+                // History filters
+                const historyFilter = document.getElementById('historyFilter');
+                const timeFilter = document.getElementById('timeFilter');
+                if (historyFilter && timeFilter) {
+                    historyFilter.addEventListener('change', () => this.loadHistory());
+                    timeFilter.addEventListener('change', () => this.loadHistory());
+                }
+            }
+
+            updateNavigation() {
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user) {
+                    document.getElementById('userName').textContent = user.email;
+                    document.getElementById('userRole').textContent = user.role;
+                    document.getElementById('userInitials').textContent = user.email.charAt(0).toUpperCase();
+                }
+            }
+
+            async loadUserData() {
+                try {
+                    this.showLoading('Loading dashboard...');
+                    
+                    // Load user profile
+                    await this.loadProfile();
+                    
+                    // Load subscription status
+                    await this.loadSubscription();
+                    
+                    // Load user keys
+                    await this.loadKeys();
+                    
+                    // Load history
+                    await this.loadHistory();
+                    
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                    this.showError('Failed to load dashboard data');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            async loadProfile() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/users/me`, {
+                        headers: this.getAuthHeaders()
+                    });
+
+                    if (response.ok) {
+                        this.userInfo = await response.json();
+                        this.updateProfileForm();
+                    }
+                } catch (error) {
+                    console.error('Error loading profile:', error);
+                }
+            }
+
+            async loadSubscription() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/users/subscription`, {
+                        headers: this.getAuthHeaders()
+                    });
+
+                    if (response.ok) {
+                        this.subscriptionData = await response.json();
+                    } else {
+                        this.subscriptionData = null;
+                    }
+                    
+                    this.updateSubscriptionDisplay();
+                    this.updateQuickStats();
+                } catch (error) {
+                    console.error('Error loading subscription:', error);
+                    this.updateSubscriptionDisplay();
+                }
+            }
+
+            async loadKeys() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/users/keys`, {
+                        headers: this.getAuthHeaders()
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.keysData = data.keys || [];
+                    } else {
+                        this.keysData = [];
+                    }
+                    
+                    this.updateKeysDisplay();
+                } catch (error) {
+                    console.error('Error loading keys:', error);
+                    this.keysData = [];
+                    this.updateKeysDisplay();
+                }
+            }
+
+            async loadHistory() {
+                try {
+                    const historyFilter = document.getElementById('historyFilter')?.value || 'all';
+                    const timeFilter = document.getElementById('timeFilter')?.value || 'all';
+                    
+                    const params = new URLSearchParams();
+                    if (historyFilter !== 'all') params.append('type', historyFilter);
+                    if (timeFilter !== 'all') params.append('days', timeFilter);
+
+                    const response = await fetch(`${API_BASE_URL}/users/history?${params}`, {
+                        headers: this.getAuthHeaders()
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.updateHistoryDisplay(data.history || []);
+                    }
+                } catch (error) {
+                    console.error('Error loading history:', error);
+                }
+            }
+
+            updateProfileForm() {
+                if (!this.userInfo) return;
+
+                document.getElementById('profileEmail').value = this.userInfo.email || '';
+                document.getElementById('accountRole').value = this.userInfo.role || '';
+                document.getElementById('memberSince').value = this.formatDate(this.userInfo.createdAt);
+                document.getElementById('lastLogin').value = this.formatDate(this.userInfo.lastLogin);
+            }
+
+            updateSubscriptionDisplay() {
+                const statusElement = document.getElementById('subscriptionStatus');
+                const detailsElement = document.getElementById('subscriptionDetails');
+
+                if (this.subscriptionData && this.subscriptionData.isActive) {
+                    const sub = this.subscriptionData;
+                    const timeLeft = this.calculateTimeLeft(sub.expiresAt);
+                    
+                    // Update status card
+                    statusElement.innerHTML = `
+                        <div class="subscription-active">
+                            <div class="sub-status">
+                                <span class="status-badge active">Active</span>
+                                <span class="sub-product">${sub.productName}</span>
+                            </div>
+                            <div class="sub-time">
+                                <span class="time-value">${timeLeft.display}</span>
+                                <span class="time-label">remaining</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${timeLeft.percentage}%"></div>
+                        </div>
+                    `;
+
+                    // Update details section
+                    detailsElement.innerHTML = `
+                        <div class="subscription-card active">
+                            <div class="sub-header">
+                                <div class="sub-icon active">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                                    </svg>
+                                </div>
+                                <div class="sub-info">
+                                    <h3>${sub.productName}</h3>
+                                    <p class="sub-status-text">Active Subscription</p>
+                                </div>
+                                <div class="sub-badge">
+                                    <span class="badge active">Active</span>
+                                </div>
+                            </div>
+                            <div class="sub-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Expires:</span>
+                                    <span class="detail-value">${this.formatDate(sub.expiresAt)}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Time Remaining:</span>
+                                    <span class="detail-value">${timeLeft.display}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Hardware ID:</span>
+                                    <span class="detail-value">${sub.hwid}</span>
+                                </div>
+                            </div>
+                            <div class="sub-actions">
+                                <button class="btn btn-outline btn-small" onclick="window.open('products.html', '_blank')">
+                                    Extend Subscription
+                                </button>
+                                <button class="btn btn-primary btn-small" onclick="downloadLoader()">
+                                    Download Loader
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // No active subscription
+                    statusElement.innerHTML = `
+                        <div class="subscription-inactive">
+                            <div class="sub-status">
+                                <span class="status-badge inactive">Inactive</span>
+                                <span class="sub-product">No Active Subscription</span>
+                            </div>
+                            <button class="btn btn-primary btn-small" onclick="showSection('redeem')">
+                                Redeem Key
+                            </button>
+                        </div>
+                    `;
+
+                    detailsElement.innerHTML = `
+                        <div class="subscription-card inactive">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7C13.4,7 14.8,8.6 14.8,10V11.5C15.4,11.5 16,12.1 16,12.7V16.2C16,16.8 15.4,17.3 14.8,17.3H9.2C8.6,17.3 8,16.8 8,16.2V12.8C8,12.2 8.6,11.7 9.2,11.7V10C9.2,8.6 10.6,7 12,7M12,8.2C11.2,8.2 10.5,8.7 10.5,9.5V11.5H13.5V9.5C13.5,8.7 12.8,8.2 12,8.2Z"/>
+                                    </svg>
+                                </div>
+                                <h3>No Active Subscription</h3>
+                                <p>You don't have an active CS2 Loader subscription. Redeem a key or purchase a new subscription to get started.</p>
+                                <div class="empty-actions">
+                                    <button class="btn btn-primary" onclick="showSection('redeem')">Redeem Key</button>
+                                    <button class="btn btn-outline" onclick="window.open('products.html', '_blank')">Buy Subscription</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            updateKeysDisplay() {
+                const keysStatusElement = document.getElementById('keysStatus');
+                const keysListElement = document.getElementById('keysList');
+
+                const unredeemedKeys = this.keysData.filter(key => !key.isRedeemed && !key.isExpired);
+                
+                // Update status card
+                keysStatusElement.innerHTML = `
+                    <div class="keys-info">
+                        <span class="keys-count">${unredeemedKeys.length}</span>
+                        <span class="keys-label">${unredeemedKeys.length === 1 ? 'key' : 'keys'} available</span>
+                    </div>
+                    ${unredeemedKeys.length > 0 ? 
+                        '<button class="btn btn-primary btn-small" onclick="showSection(\'redeem\')">Redeem Key</button>' : 
+                        '<button class="btn btn-outline btn-small" onclick="window.open(\'products.html\', \'_blank\')">Buy Keys</button>'
+                    }
+                `;
+
+                // Update keys list
+                if (this.keysData.length === 0) {
+                    keysListElement.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7,14A3,3 0 0,0 10,17A3,3 0 0,0 13,14A3,3 0 0,0 10,11A3,3 0 0,0 7,14M12.65,10C11.83,7.67 9.61,6 7,6A6,6 0 0,0 1,12A6,6 0 0,0 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z"/>
+                                </svg>
+                            </div>
+                            <h3>No Keys Found</h3>
+                            <p>You haven't purchased any keys yet.</p>
+                            <button class="btn btn-primary" onclick="window.open('products.html', '_blank')">
+                                Purchase Keys
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    keysListElement.innerHTML = this.keysData.map(key => this.renderKeyItem(key)).join('');
+                }
+            }
+
+            renderKeyItem(key) {
+                const statusClass = key.isRedeemed ? 'redeemed' : key.isExpired ? 'expired' : 'available';
+                const statusText = key.isRedeemed ? 'Redeemed' : key.isExpired ? 'Expired' : 'Available';
+                
+                return `
+                    <div class="key-item ${statusClass}">
+                        <div class="key-header">
+                            <div class="key-code">${key.keyCode}</div>
+                            <div class="key-status ${statusClass}">${statusText}</div>
+                        </div>
+                        <div class="key-details">
+                            <div class="key-info">
+                                <span class="key-product">${key.productName}</span>
+                                <span class="key-duration">${key.durationDays === 999999 ? 'Lifetime' : key.durationDays + ' days'}</span>
+                            </div>
+                            <div class="key-dates">
+                                <span class="key-date">Purchased: ${this.formatDate(key.createdAt)}</span>
+                                ${key.redeemedAt ? `<span class="key-date">Redeemed: ${this.formatDate(key.redeemedAt)}</span>` : ''}
+                                ${key.expiresAt ? `<span class="key-date">Expires: ${this.formatDate(key.expiresAt)}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="key-actions">
+                            ${!key.isRedeemed && !key.isExpired ? 
+                                `<button class="btn btn-primary btn-small" onclick="fillKeyInput('${key.keyCode}')">Redeem</button>` : 
+                                ''
+                            }
+                            <button class="btn btn-outline btn-small" onclick="copyToClipboard('${key.keyCode}')">Copy</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            updateHistoryDisplay(history) {
+                const historyListElement = document.getElementById('historyList');
+                
+                if (history.length === 0) {
+                    historyListElement.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3"/>
+                                </svg>
+                            </div>
+                            <h3>No History Found</h3>
+                            <p>No transactions match your current filter.</p>
+                        </div>
+                    `;
+                } else {
+                    historyListElement.innerHTML = history.map(item => this.renderHistoryItem(item)).join('');
+                }
+            }
+
+            renderHistoryItem(item) {
+                const typeIcons = {
+                    purchase: '<path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>',
+                    redemption: '<path d="M7,14A3,3 0 0,0 10,17A3,3 0 0,0 13,14A3,3 0 0,0 10,11A3,3 0 0,0 7,14M12.65,10C11.83,7.67 9.61,6 7,6A6,6 0 0,0 1,12A6,6 0 0,0 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z"/>',
+                    subscription: '<path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>'
+                };
+
+                return `
+                    <div class="history-item">
+                        <div class="history-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                ${typeIcons[item.type] || typeIcons.purchase}
+                            </svg>
+                        </div>
+                        <div class="history-content">
+                            <div class="history-title">${item.description}</div>
+                            <div class="history-details">
+                                <span class="history-date">${this.formatDate(item.createdAt)}</span>
+                                ${item.amount ? `<span class="history-amount">${item.amount}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="history-status">
+                            <span class="status-badge ${item.status}">${item.status}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            updateQuickStats() {
+                const statusElement = document.getElementById('quickStatus');
+                const timeLeftElement = document.getElementById('quickTimeLeft');
+
+                if (this.subscriptionData && this.subscriptionData.isActive) {
+                    const timeLeft = this.calculateTimeLeft(this.subscriptionData.expiresAt);
+                    statusElement.textContent = 'Active';
+                    timeLeftElement.textContent = timeLeft.display;
+                } else {
+                    statusElement.textContent = 'Inactive';
+                    timeLeftElement.textContent = '--';
+                }
+            }
+
+            async generateHwid() {
+                try {
+                    // Generate a unique hardware ID based on browser/system characteristics
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    ctx.textBaseline = 'top';
+                    ctx.font = '14px Arial';
+                    ctx.fillText('HWID Generation', 2, 2);
+                    
+                    const canvasFingerprint = canvas.toDataURL();
+                    const screenInfo = `${screen.width}x${screen.height}x${screen.colorDepth}`;
+                    const timezoneInfo = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    const languageInfo = navigator.language;
+                    const platformInfo = navigator.platform;
+                    
+                    const combined = `${canvasFingerprint}-${screenInfo}-${timezoneInfo}-${languageInfo}-${platformInfo}`;
+                    
+                    // Simple hash function
+                    let hash = 0;
+                    for (let i = 0; i < combined.length; i++) {
+                        const char = combined.charCodeAt(i);
+                        hash = ((hash << 5) - hash) + char;
+                        hash = hash & hash; // Convert to 32bit integer
+                    }
+                    
+                    this.userHwid = Math.abs(hash).toString(36).toUpperCase();
+                    
+                    const hwidElement = document.getElementById('deviceHwid');
+                    if (hwidElement) {
+                        hwidElement.textContent = this.userHwid;
+                    }
+                } catch (error) {
+                    console.error('HWID generation error:', error);
+                    this.userHwid = 'HWID-' + Date.now().toString(36).toUpperCase();
+                }
+            }
+
+            async handleKeyRedemption(e) {
+                e.preventDefault();
+                
+                const keyCode = document.getElementById('keyCode').value.trim();
+                if (!this.validateKeyFormat(keyCode)) {
+                    this.showFieldError('keyCodeError', 'Please enter a valid key in the format XXXX-XXXX-XXXX-XXXX');
+                    return;
+                }
+
+                try {
+                    this.setLoading(true, 'Redeeming key...');
+                    
+                    const response = await fetch(`${API_BASE_URL}/keys/redeem`, {
+                        method: 'POST',
+                        headers: {
+                            ...this.getAuthHeaders(),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            keyCode: keyCode,
+                            hwid: this.userHwid
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        this.showRedeemSuccess(data);
+                        document.getElementById('redeemForm').reset();
+                        this.clearError('keyCodeError');
+                        
+                        // Reload data
+                        await this.loadSubscription();
+                        await this.loadKeys();
+                    } else {
+                        this.showFieldError('keyCodeError', data.error || 'Key redemption failed');
+                    }
+                } catch (error) {
+                    console.error('Key redemption error:', error);
+                    this.showError('Failed to redeem key. Please try again.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            showRedeemSuccess(data) {
+                const modal = document.getElementById('redeemSuccessModal');
+                const detailsElement = document.getElementById('redemptionDetails');
+                
+                detailsElement.innerHTML = `
+                    <div class="redemption-info">
+                        <div class="redemption-row">
+                            <span class="redemption-label">Product:</span>
+                            <span class="redemption-value">${data.subscription.productName}</span>
+                        </div>
+                        <div class="redemption-row">
+                            <span class="redemption-label">Duration:</span>
+                            <span class="redemption-value">${data.subscription.isLifetime ? 'Lifetime' : data.subscription.durationDays + ' days'}</span>
+                        </div>
+                        <div class="redemption-row">
+                            <span class="redemption-label">Expires:</span>
+                            <span class="redemption-value">${this.formatDate(data.subscription.expiresAt)}</span>
+                        </div>
+                        <div class="redemption-row">
+                            <span class="redemption-label">Hardware ID:</span>
+                            <span class="redemption-value">${this.userHwid}</span>
+                        </div>
+                    </div>
+                `;
+                
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Utility functions
+            formatKeyInput(e) {
+                let value = e.target.value.replace(/[^A-Z0-9]/g, '');
+                let formatted = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formatted += '-';
+                    }
+                    formatted += value[i];
+                }
+                
+                e.target.value = formatted.substring(0, 19);
+            }
+
+            handleKeyPaste(e) {
+                e.preventDefault();
+                const paste = (e.clipboardData || window.clipboardData).getData('text');
+                const cleaned = paste.replace(/[^A-Z0-9]/g, '');
+                
+                if (cleaned.length === 16) {
+                    const formatted = cleaned.replace(/(.{4})/g, '$1-').slice(0, -1);
+                    e.target.value = formatted;
+                }
+            }
+
+            validateKeyFormat(key) {
+                const pattern = /^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+                return pattern.test(key);
+            }
+
+            calculateTimeLeft(expiresAt) {
+                const now = new Date();
+                const expires = new Date(expiresAt);
+                const diff = expires - now;
+                
+                if (diff <= 0) {
+                    return { display: 'Expired', percentage: 0 };
+                }
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                let display;
+                if (days > 0) {
+                    display = `${days}d ${hours}h`;
+                } else if (hours > 0) {
+                    display = `${hours}h ${minutes}m`;
+                } else {
+                    display = `${minutes}m`;
+                }
+                
+                // Calculate percentage (assuming 30 days max for progress bar)
+                const maxDays = 30;
+                const percentage = Math.min(100, (days / maxDays) * 100);
+                
+                return { display, percentage };
+            }
+
+            formatDate(dateString) {
+                if (!dateString) return 'N/A';
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            startAutoRefresh() {
+                // Refresh subscription status every 5 minutes
+                setInterval(() => {
+                    this.loadSubscription();
+                }, 5 * 60 * 1000);
+            }
+
+            getAuthHeaders() {
+                const token = localStorage.getItem('token');
+                return {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                };
+            }
+
+            // UI Helper Functions
+            showLoading(message = 'Loading...') {
+                const overlay = document.getElementById('loadingOverlay');
+                const text = overlay.querySelector('p');
+                text.textContent = message;
+                overlay.style.display = 'flex';
+            }
+
+            hideLoading() {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
+
+            setLoading(loading, message = 'Loading...') {
+                if (loading) {
+                    this.showLoading(message);
+                } else {
+                    this.hideLoading();
+                }
+            }
+
+            showError(message) {
+                this.showToast(message, 'error');
+            }
+
+            showSuccess(message) {
+                this.showToast(message, 'success');
+            }
+
+            showFieldError(fieldId, message) {
+                const errorElement = document.getElementById(fieldId);
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                }
+            }
+
+            clearError(fieldId) {
+                const errorElement = document.getElementById(fieldId);
+                if (errorElement) {
+                    errorElement.textContent = '';
+                    errorElement.style.display = 'none';
+                }
+            }
+
+            showToast(message, type = 'info') {
+                // Remove existing toasts
+                const existingToasts = document.querySelectorAll('.toast');
+                existingToasts.forEach(toast => toast.remove());
+                
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                
+                const icons = {
+                    success: '<path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>',
+                    error: '<path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>',
+                    info: '<path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>'
+                };
+                
+                toast.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        ${icons[type] || icons.info}
+                    </svg>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.remove()" class="toast-close">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                        </svg>
+                    </button>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        if (toast.parentElement) {
+                            toast.remove();
+                        }
+                    }, 300);
+                }, type === 'error' ? 6000 : 4000);
+            }
+        }
+
+        // Global functions
+        function showSection(sectionName) {
+            // Update sidebar
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showSection('${sectionName}')"]`).classList.add('active');
+            
+            // Update sections
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`${sectionName}-section`).classList.add('active');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        function downloadLoader() {
+            // In a real implementation, this would trigger the actual download
+            dashboardManager.showToast('Download started! Check your downloads folder.', 'success');
+        }
+
+        function pasteKey() {
+            navigator.clipboard.readText().then(text => {
+                const keyInput = document.getElementById('keyCode');
+                keyInput.value = text.trim();
+                keyInput.dispatchEvent(new Event('input'));
+            }).catch(() => {
+                dashboardManager.showError('Failed to paste from clipboard');
+            });
+        }
+
+        function fillKeyInput(keyCode) {
+            document.getElementById('keyCode').value = keyCode;
+            showSection('redeem');
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                dashboardManager.showSuccess('Copied to clipboard!');
+            }).catch(() => {
+                dashboardManager.showError('Failed to copy to clipboard');
+            });
+        }
+
+        function filterKeys(filter) {
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+            
+            // Filter key items
+            const keyItems = document.querySelectorAll('.key-item');
+            keyItems.forEach(item => {
+                const show = filter === 'all' || item.classList.contains(filter);
+                item.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        function showAccountSettings() {
+            document.getElementById('accountSettingsModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAccountSettings() {
+            document.getElementById('accountSettingsModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showDeleteAccountModal() {
+            document.getElementById('deleteAccountModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteAccountModal() {
+            document.getElementById('deleteAccountModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('deleteConfirmation').value = '';
+            document.getElementById('confirmDeleteBtn').disabled = true;
+        }
+
+        function closeRedeemSuccessModal() {
+            document.getElementById('redeemSuccessModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function confirmDeleteAccount() {
+            const confirmation = document.getElementById('deleteConfirmation').value;
+            if (confirmation === 'DELETE') {
+                dashboardManager.showToast('Account deletion is not implemented in this demo', 'info');
+                closeDeleteAccountModal();
+            }
+        }
+
+        function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            
+            if (!currentPassword || !newPassword) {
+                dashboardManager.showError('Please fill in both password fields');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                dashboardManager.showError('New password must be at least 8 characters long');
+                return;
+            }
+            
+            dashboardManager.showToast('Password change is not implemented in this demo', 'info');
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+        }
+
+        function showTwoFactorSetup() {
+            dashboardManager.showToast('Two-factor authentication setup coming soon!', 'info');
+        }
+
+        // Initialize dashboard
+        let dashboardManager;
+        document.addEventListener('DOMContentLoaded', function() {
+            dashboardManager = new DashboardManager();
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.user-menu')) {
+                    document.getElementById('userDropdown').classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

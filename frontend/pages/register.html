@@ -313,6 +313,7 @@
             init() {
                 this.bindEvents();
                 this.setupFormValidation();
+                this.checkExistingAuth();
             }
 
             bindEvents() {
@@ -321,8 +322,12 @@
                 
                 // Real-time validation
                 document.getElementById('email').addEventListener('blur', () => this.validateEmail());
-                document.getElementById('password').addEventListener('input', () => this.checkPasswordStrength());
+                document.getElementById('password').addEventListener('input', () => {
+                    this.checkPasswordStrength();
+                    this.validatePassword();
+                });
                 document.getElementById('password').addEventListener('blur', () => this.validatePassword());
+                document.getElementById('confirmPassword').addEventListener('input', () => this.validateConfirmPassword());
                 document.getElementById('confirmPassword').addEventListener('blur', () => this.validateConfirmPassword());
                 document.getElementById('agreeTerms').addEventListener('change', () => this.validateTerms());
                 
@@ -332,6 +337,37 @@
                         this.closeAllModals();
                     }
                 });
+            }
+
+            checkExistingAuth() {
+                const token = localStorage.getItem('token');
+                if (token) {
+                    // Check if token is still valid
+                    this.validateTokenAndRedirect(token);
+                }
+            }
+
+            async validateTokenAndRedirect(token) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/auth/validate`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        // Token is valid, redirect to dashboard
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        // Token is invalid, remove it
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                    }
+                } catch (error) {
+                    console.error('Token validation error:', error);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
             }
 
             setupFormValidation() {
@@ -397,6 +433,7 @@
                         // Clear form
                         document.getElementById('registerForm').reset();
                         this.resetPasswordStrength();
+                        this.clearAllErrors();
                         
                     } else {
                         this.handleRegistrationError(data.error || 'Registration failed', data.details);
@@ -603,6 +640,20 @@
                 }
             }
 
+            clearAllErrors() {
+                const errorElements = document.querySelectorAll('.form-error');
+                errorElements.forEach(element => {
+                    element.textContent = '';
+                    element.style.display = 'none';
+                });
+
+                const inputs = document.querySelectorAll('.form-input');
+                inputs.forEach(input => {
+                    input.classList.remove('error');
+                    input.parentElement.classList.remove('has-value');
+                });
+            }
+
             updateInputState(input) {
                 if (input.value) {
                     input.parentElement.classList.add('has-value');
@@ -619,6 +670,8 @@
                             this.showFieldError('emailError', detail.msg);
                         } else if (detail.path === 'password') {
                             this.showFieldError('passwordError', detail.msg);
+                        } else if (detail.path === 'confirmPassword') {
+                            this.showFieldError('confirmPasswordError', detail.msg);
                         }
                     });
                 } else if (error.includes('email') && error.includes('exists')) {
@@ -725,6 +778,11 @@
                         ${icons[type] || icons.info}
                     </svg>
                     <span>${message}</span>
+                    <button onclick="this.parentElement.remove()" class="toast-close">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                        </svg>
+                    </button>
                 `;
                 
                 document.body.appendChild(toast);
@@ -732,7 +790,11 @@
                 setTimeout(() => toast.classList.add('show'), 100);
                 setTimeout(() => {
                     toast.classList.remove('show');
-                    setTimeout(() => toast.remove(), 300);
+                    setTimeout(() => {
+                        if (toast.parentElement) {
+                            toast.remove();
+                        }
+                    }, 300);
                 }, type === 'error' ? 6000 : 4000);
             }
         }
@@ -892,6 +954,90 @@
             flex-wrap: wrap;
         }
 
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-large);
+            z-index: 10001;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all var(--transition-normal);
+            max-width: 400px;
+            min-width: 300px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .toast-success svg {
+            color: var(--accent-green);
+        }
+
+        .toast-error {
+            border-left: 4px solid var(--accent-red);
+        }
+
+        .toast-error svg {
+            color: var(--accent-red);
+        }
+
+        .toast-info {
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .toast-info svg {
+            color: var(--accent-blue);
+        }
+
+        .toast span {
+            flex: 1;
+            color: var(--text-primary);
+            font-size: var(--font-size-sm);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .toast-close:hover {
+            color: var(--text-primary);
+            background: var(--tertiary-bg);
+        }
+
+        .spinner-small {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Mobile responsive adjustments */
         @media (max-width: 768px) {
             .social-login {
@@ -904,6 +1050,29 @@
             
             .checkbox-label {
                 font-size: var(--font-size-xs);
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 1.5rem 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+            
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
             }
         }
     </style>
