@@ -1,0 +1,56 @@
+{
+  "name": "cs2-loader-web-system",
+  "version": "1.0.0",
+  "description": "CS2 Loader Web System - Premium gaming enhancement platform with subscription management",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "backend": "cd backend && npm start",
+    "backend:dev": "cd backend && npm run dev",
+    "setup": "npm run setup:backend && npm run setup:database",
+    "setup:backend": "cd backend && npm install",
+    "setup:database": "cd backend && npm run setup",
+    "create-admin": "cd backend && npm run create-admin",
+    "migrate": "cd backend && npm run migrate",
+    "test": "cd backend && npm test",
+    "lint": "cd backend && npm run lint",
+    "build": "npm run build:frontend",
+    "build:frontend": "echo 'Frontend build complete - static files ready'",
+    "serve:frontend": "npx http-server frontend -p 8080 -c-1",
+    "dev:full": "concurrently \"npm run backend:dev\" \"npm run serve:frontend\"",
+    "postinstall": "npm run setup:backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/cs2-loader-web-system.git"
+  },
+  "keywords": [
+    "cs2",
+    "counter-strike",
+    "loader",
+    "gaming",
+    "subscription",
+    "web-system",
+    "hwid",
+    "security"
+  ],
+  "author": "CS2 Loader Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/cs2-loader-web-system/issues"
+  },
+  "homepage": "https://github.com/yourusername/cs2-loader-web-system#readme",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "http-server": "^14.1.1"
+  },
+  "workspaces": [
+    "backend"
+  ],
+  "private": true
+}

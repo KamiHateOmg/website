@@ -5,7 +5,7 @@
 const API_CONFIG = {
     BASE_URL: window.location.hostname === 'localhost' 
         ? 'http://localhost:3000/api' 
-        : '/api',
+        : `http://${window.location.hostname}:3000/api`,
     TIMEOUT: 30000, // 30 seconds
     RETRY_ATTEMPTS: 3,
     RETRY_DELAY: 1000 // 1 second
