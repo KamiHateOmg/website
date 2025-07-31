@@ -9,7 +9,7 @@ const logger = require('../utils/logger');
 const router = express.Router();
 
 // Email transporter setup
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE || 'gmail',
     auth: {
         user: process.env.EMAIL_USER,

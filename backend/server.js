@@ -80,7 +80,25 @@ const authLimiter = rateLimit({
 // Middleware
 app.use(compression());
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:8080',
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        // Allow localhost and your local IP
+        const allowedOrigins = [
+            'http://localhost:8080',
+            'http://127.0.0.1:8080',
+            'http://192.168.1.22:8080',
+            process.env.FRONTEND_URL
+        ].filter(Boolean);
+        
+        // Also allow any origin from your local network
+        if (origin.startsWith('http://192.168.') || origin.startsWith('http://localhost') || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        
+        return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
