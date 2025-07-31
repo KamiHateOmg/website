@@ -1,4 +1,4 @@
-// Products Page JavaScript - Fixed and Enhanced
+// Products Page JavaScript - Enhanced and Fixed
 // Handles product display, purchasing, and modal interactions
 
 class ProductManager {
@@ -12,6 +12,7 @@ class ProductManager {
     init() {
         this.bindEvents();
         this.loadProducts();
+        this.initializeBillingToggle();
     }
 
     bindEvents() {
@@ -41,15 +42,17 @@ class ProductManager {
             const data = await response.json();
             
             if (response.ok) {
-                this.products = data.products;
+                this.products = data.products || [];
                 this.renderProducts();
                 this.initializeProductCards();
             } else {
                 this.showError('Failed to load products: ' + (data.error || 'Unknown error'));
+                this.renderEmptyState();
             }
         } catch (error) {
             console.error('Error loading products:', error);
             this.showError('Failed to load products. Please check your connection.');
+            this.renderEmptyState();
         } finally {
             this.hideLoading();
         }
@@ -64,7 +67,7 @@ class ProductManager {
         }
 
         if (this.products.length === 0) {
-            grid.innerHTML = this.getEmptyStateHTML();
+            this.renderEmptyState();
             return;
         }
 
@@ -80,6 +83,13 @@ class ProductManager {
         
         // Add entrance animations
         this.animateProductCards();
+    }
+
+    renderEmptyState() {
+        const grid = document.getElementById('productsGrid');
+        if (grid) {
+            grid.innerHTML = this.getEmptyStateHTML();
+        }
     }
 
     getProductCardHTML(product) {
@@ -237,11 +247,15 @@ class ProductManager {
         const cards = document.querySelectorAll('.product-card');
         cards.forEach(card => {
             card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-8px)';
+                if (!card.classList.contains('featured')) {
+                    card.style.transform = 'translateY(-8px)';
+                }
             });
             
             card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0)';
+                if (!card.classList.contains('featured')) {
+                    card.style.transform = 'translateY(0)';
+                }
             });
         });
     }
@@ -299,8 +313,11 @@ class ProductManager {
     }
 
     closePurchaseModal() {
-        document.getElementById('purchaseModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
+        const modal = document.getElementById('purchaseModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
         this.selectedProduct = null;
     }
 
@@ -388,8 +405,11 @@ class ProductManager {
     }
 
     closeSuccessModal() {
-        document.getElementById('successModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
+        const modal = document.getElementById('successModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
         
         // Clear purchase info
         const purchaseInfo = document.querySelector('.purchase-info');
@@ -544,6 +564,21 @@ class ProductManager {
         }
     }
 
+    initializeBillingToggle() {
+        const toggle = document.getElementById('billingToggle');
+        if (toggle) {
+            toggle.addEventListener('change', function() {
+                // This would switch between monthly/yearly pricing
+                // For now, we'll just show a message
+                if (this.checked) {
+                    productManager.showInfo('Yearly billing coming soon!');
+                } else {
+                    // Reset to monthly view
+                }
+            });
+        }
+    }
+
     trackPurchaseEvent(product, keyCode) {
         // Track purchase for analytics
         if (typeof gtag !== 'undefined') {
@@ -584,7 +619,7 @@ class ProductManager {
 
     redirectToLogin() {
         const currentUrl = window.location.pathname + window.location.search;
-        window.location.href = `login.html?redirect=${encodeURIComponent(currentUrl)}`;
+        window.location.href = `../pages/login.html?redirect=${encodeURIComponent(currentUrl)}`;
     }
 
     escapeHtml(text) {
@@ -596,14 +631,19 @@ class ProductManager {
     showLoading(message = 'Loading...') {
         this.isLoading = true;
         const overlay = document.getElementById('loadingOverlay');
-        const text = overlay.querySelector('p');
-        text.textContent = message;
-        overlay.style.display = 'flex';
+        if (overlay) {
+            const text = overlay.querySelector('p');
+            if (text) text.textContent = message;
+            overlay.style.display = 'flex';
+        }
     }
 
     hideLoading() {
         this.isLoading = false;
-        document.getElementById('loadingOverlay').style.display = 'none';
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
     }
 
     showError(message) {
@@ -626,7 +666,7 @@ class ProductManager {
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
         
-        const icon = {
+        const icons = {
             success: '<path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>',
             error: '<path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>',
             info: '<path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>',
@@ -635,7 +675,7 @@ class ProductManager {
         
         toast.innerHTML = `
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                ${icon[type] || icon.info}
+                ${icons[type] || icons.info}
             </svg>
             <span>${message}</span>
             <button onclick="this.parentElement.remove()" class="toast-close">
