@@ -15,6 +15,7 @@
 config/local.js
 config/production.js
 config/secrets.json
+test-email.js
 
 # ==============================================
 # NODE.JS

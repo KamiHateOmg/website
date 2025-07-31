@@ -311,8 +311,7 @@
                 try {
                     this.setLoading(true);
                     
-                    // Get HWID for hardware locking
-                    const hwid = await this.generateHWID();
+                    // REMOVED: HWID generation - this is handled by desktop app
                     
                     const response = await fetch(`${API_BASE_URL}/auth/login`, {
                         method: 'POST',
@@ -322,8 +321,8 @@
                         body: JSON.stringify({
                             email,
                             password,
-                            hwid,
                             rememberMe
+                            // REMOVED: hwid - not needed for web login
                         })
                     });
                     

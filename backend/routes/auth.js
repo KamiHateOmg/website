@@ -33,7 +33,6 @@ const registerValidation = [
 const loginValidation = [
     body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
     body('password').notEmpty().withMessage('Password is required'),
-    body('hwid').optional().isLength({ min: 10, max: 255 }).withMessage('Invalid HWID format')
 ];
 
 // Helper function to generate JWT
@@ -172,7 +171,7 @@ router.post('/login', loginValidation, async (req, res) => {
         });
     }
 
-    const { email, password, hwid } = req.body;
+    const { email, password, hwid } = req.body; // hwid is optional
     const pool = req.app.locals.db;
 
     try {
@@ -208,7 +207,7 @@ router.post('/login', loginValidation, async (req, res) => {
             });
         }
 
-        // Update HWID if provided and different
+        // Update HWID only if provided and different (for desktop app usage)
         if (hwid && hwid !== user.hwid) {
             await pool.query(
                 'UPDATE users SET hwid = $1 WHERE id = $2',
@@ -227,7 +226,7 @@ router.post('/login', loginValidation, async (req, res) => {
         const token = generateToken(user.id, user.email, user.role);
 
         // Log successful login
-        await logAuditEvent(pool, user.id, 'USER_LOGIN', { ip: req.ip, hwid }, req.ip);
+        await logAuditEvent(pool, user.id, 'USER_LOGIN', { ip: req.ip, hwid: hwid || 'web' }, req.ip);
         await logAuthAttempt(pool, email, req.ip, true, req.get('User-Agent'));
 
         res.json({
@@ -238,7 +237,7 @@ router.post('/login', loginValidation, async (req, res) => {
                 email: user.email,
                 role: user.role,
                 emailVerified: user.email_verified,
-                hwid: hwid || user.hwid,
+                hwid: user.hwid, // Return existing HWID from database
                 lastLogin: user.last_login
             }
         });

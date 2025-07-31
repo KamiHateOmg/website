@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - CS2 Loader</title>
+    <meta name="description" content="Verify your CS2 Loader account email">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">CS2 Loader</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-background">
+            <div class="auth-particles"></div>
+            <div class="auth-gradient"></div>
+        </div>
+        
+        <div class="auth-content">
+            <div class="auth-card" style="text-align: center; max-width: 500px; margin: 0 auto;">
+                <!-- Loading State -->
+                <div id="loadingState" class="verification-state">
+                    <div class="verification-icon loading">
+                        <div class="spinner"></div>
+                    </div>
+                    <h1 class="auth-title">Verifying Email...</h1>
+                    <p class="auth-subtitle">Please wait while we verify your email address.</p>
+                </div>
+
+                <!-- Success State -->
+                <div id="successState" class="verification-state" style="display: none;">
+                    <div class="verification-icon success">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                        </svg>
+                    </div>
+                    <h1 class="auth-title">Email Verified!</h1>
+                    <p class="auth-subtitle">Your account has been successfully verified. You can now sign in to CS2 Loader.</p>
+                    <div class="verification-actions">
+                        <a href="pages/login.html" class="btn btn-primary btn-large">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M10,17V14H3V10H10V7L15,12L10,17M10,2H19A2,2 0 0,1 21,4V20A2,2 0 0,1 19,22H10A2,2 0 0,1 8,20V18H10V20H19V4H10V6H8V4A2,2 0 0,1 10,2Z"/>
+                            </svg>
+                            Sign In Now
+                        </a>
+                        <a href="index.html" class="btn btn-outline">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/>
+                            </svg>
+                            Go to Home
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="verification-state" style="display: none;">
+                    <div class="verification-icon error">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                        </svg>
+                    </div>
+                    <h1 class="auth-title">Verification Failed</h1>
+                    <p class="auth-subtitle" id="errorMessage">The verification link is invalid or has expired.</p>
+                    <div class="verification-actions">
+                        <button onclick="resendVerification()" class="btn btn-primary btn-large" id="resendBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                            </svg>
+                            Resend Verification Email
+                        </button>
+                        <a href="pages/register.html" class="btn btn-outline">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M15,14C12.33,14 7,15.33 7,18V20H23V18C23,15.33 17.67,14 15,14M6,10V7H4V10H1V12H4V15H6V12H9V10M15,12A4,4 0 0,0 19,8A4,4 0 0,0 15,4A4,4 0 0,0 11,8A4,4 0 0,0 15,12Z"/>
+                            </svg>
+                            Create New Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/api.js"></script>
+    <script>
+        class EmailVerification {
+            constructor() {
+                this.token = this.getTokenFromURL();
+                this.init();
+            }
+
+            init() {
+                if (!this.token) {
+                    this.showError('No verification token provided');
+                    return;
+                }
+
+                this.verifyEmail();
+            }
+
+            getTokenFromURL() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('token');
+            }
+
+            async verifyEmail() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/auth/verify-email/${this.token}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        this.showSuccess();
+                    } else {
+                        this.showError(data.error || 'Verification failed');
+                    }
+
+                } catch (error) {
+                    console.error('Verification error:', error);
+                    this.showError('Network error. Please check your connection and try again.');
+                }
+            }
+
+            showSuccess() {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('errorState').style.display = 'none';
+                document.getElementById('successState').style.display = 'block';
+
+                // Add celebration effect
+                this.celebrate();
+            }
+
+            showError(message) {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('successState').style.display = 'none';
+                document.getElementById('errorState').style.display = 'block';
+                document.getElementById('errorMessage').textContent = message;
+            }
+
+            celebrate() {
+                // Simple confetti effect
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        this.createConfetti();
+                    }, i * 50);
+                }
+            }
+
+            createConfetti() {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = ['#58A6FF', '#1f6feb', '#238636', '#da3633', '#f85149'][Math.floor(Math.random() * 5)];
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '10000';
+                confetti.style.borderRadius = '50%';
+
+                document.body.appendChild(confetti);
+
+                const animation = confetti.animate([
+                    { transform: 'translateY(-10px) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(100vh) rotate(360deg)`, opacity: 0 }
+                ], {
+                    duration: 3000,
+                    easing: 'linear'
+                });
+
+                animation.onfinish = () => {
+                    confetti.remove();
+                };
+            }
+        }
+
+        // Global function for resend button
+        async function resendVerification() {
+            const resendBtn = document.getElementById('resendBtn');
+            resendBtn.disabled = true;
+            resendBtn.innerHTML = `
+                <div class="spinner-small"></div>
+                Sending...
+            `;
+
+            try {
+                // Here you would implement resend logic
+                // For now, just show a message
+                setTimeout(() => {
+                    alert('Resend verification is not implemented yet. Please contact support.');
+                    resendBtn.disabled = false;
+                    resendBtn.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                        </svg>
+                        Resend Verification Email
+                    `;
+                }, 2000);
+            } catch (error) {
+                console.error('Resend error:', error);
+                resendBtn.disabled = false;
+                resendBtn.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
+                    </svg>
+                    Resend Verification Email
+                `;
+            }
+        }
+
+        // Initialize verification when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            new EmailVerification();
+        });
+    </script>
+
+    <style>
+        .verification-state {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .verification-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .verification-icon.loading {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+        }
+
+        .verification-icon.success {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .verification-icon.error {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .verification-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(88, 166, 255, 0.3);
+            border-top: 3px solid var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .spinner-small {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .verification-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .verification-actions .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</body>
+</html>
