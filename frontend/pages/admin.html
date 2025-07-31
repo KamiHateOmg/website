@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - CS2 Loader</title>
+    <meta name="description" content="CS2 Loader administrative interface">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="admin-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">CS2 Loader</span>
+                </a>
+            </div>
+            
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="admin.html" class="nav-link active">Admin</a>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="user-menu">
+                    <div class="user-avatar" onclick="toggleUserDropdown()">
+                        <span id="userInitials">A</span>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <span id="userName">Admin</span>
+                            <span id="userRole" class="user-role">admin</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="dashboard.html" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z"/>
+                            </svg>
+                            Dashboard
+                        </a>
+                        <button onclick="logout()" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"/>
+                            </svg>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Container -->
+    <div class="admin-container">
+        <!-- Admin Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-content">
+                <div class="admin-section">
+                    <h3 class="admin-section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z"/>
+                        </svg>
+                        Overview
+                    </h3>
+                    <ul class="admin-menu">
+                        <li><button class="admin-menu-link active" onclick="showAdminSection('dashboard')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z"/>
+                            </svg>
+                            Dashboard
+                        </button></li>
+                        <li><button class="admin-menu-link" onclick="showAdminSection('analytics')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V17H22V21Z"/>
+                            </svg>
+                            Analytics
+                        </button></li>
+                        <li><button class="admin-menu-link" onclick="showAdminSection('health')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12.5,8H11V14L15.75,16.85L16.5,15.62L12.5,13.25V8M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4Z"/>
+                            </svg>
+                            System Health
+                        </button></li>
+                    </ul>
+                </div>
+
+                <div class="admin-section">
+                    <h3 class="admin-section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                        </svg>
+                        User Management
+                    </h3>
+                    <ul class="admin-menu">
+                        <li><button class="admin-menu-link" onclick="showAdminSection('users')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16,4C18.11,4 19.99,5.89 19.99,8C19.99,10.11 18.11,12 16,12C13.89,12 12,10.11 12,8C12,5.89 13.89,4 16,4M16,14C20.42,14 24,15.79 24,18V20H8V18C8,15.79 11.58,14 16,14M6,6V9H4V6H1V4H4V1H6V4H9V6H6M6,16V19H4V16H1V14H4V11H6V14H9V16H6Z"/>
+                            </svg>
+                            All Users
+                            <span class="menu-badge" id="totalUsersBadge">0</span>
+                        </button></li>
+                        <li><button class="admin-menu-link" onclick="showAdminSection('subscriptions')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                            </svg>
+                            Subscriptions
+                            <span class="menu-badge" id="activeSubsBadge">0</span>
+                        </button></li>
+                    </ul>
+                </div>
+
+                <div class="admin-section">
+                    <h3 class="admin-section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>
+                        </svg>
+                        Product Management
+                    </h3>
+                    <ul class="admin-menu">
+                        <li><button class="admin-menu-link" onclick="showAdminSection('products')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>
+                            </svg>
+                            Products
+                        </button></li>
+                        <li><button class="admin-menu-link" onclick="showAdminSection('keys')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7,14A3,3 0 0,0 10,17A3,3 0 0,0 13,14A3,3 0 0,0 10,11A3,3 0 0,0 7,14M12.65,10C11.83,7.67 9.61,6 7,6A6,6 0 0,0 1,12A6,6 0 0,0 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z"/>
+                            </svg>
+                            Keys Management
+                            <span class="menu-badge" id="totalKeysBadge">0</span>
+                        </button></li>
+                        <li><button class="admin-menu-link" onclick="showAdminSection('purchases')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5H5.21L4.27,3H1M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z"/>
+                            </svg>
+                            Purchases
+                        </button></li>
+                    </ul>
+                </div>
+
+                <div class="admin-section">
+                    <h3 class="admin-section-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                            </svg>
+                        </svg>
+                        System
+                    </h3>
+                    <ul class="admin-menu">
+                        <li><button class="admin-menu-link" onclick="showAdminSection('logs')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                            System Logs
+                        </button></li>
+                        <li><button class="admin-menu-link" onclick="showAdminSection('maintenance')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                            </svg>
+                            Maintenance
+                        </button></li>
+                    </ul>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="admin-stats-overview">
+                    <div class="overview-stat">
+                        <span class="overview-stat-label">Server Status</span>
+                        <span class="overview-stat-value success" id="serverStatus">Online</span>
+                    </div>
+                    <div class="overview-stat">
+                        <span class="overview-stat-label">Active Users</span>
+                        <span class="overview-stat-value" id="activeUsersCount">0</span>
+                    </div>
+                    <div class="overview-stat">
+                        <span class="overview-stat-label">Failed Logins</span>
+                        <span class="overview-stat-value" id="failedLoginsCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Admin Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="admin-section-content active">
+                <div class="admin-header">
+                    <h1 class="admin-title">Admin Dashboard</h1>
+                    <p class="admin-subtitle">System overview and management controls</p>
+                </div>
+
+                <!-- Overview Cards -->
+                <div class="admin-cards-grid">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                                </svg>
+                            </div>
+                            <div class="admin-card-title">Total Users</div>
+                        </div>
+                        <div class="admin-card-content">
+                            <div class="admin-metric">
+                                <span class="metric-label">All Users</span>
+                                <span class="metric-value" id="dashTotalUsers">0</span>
+                            </div>
+                            <div class="admin-metric">
+                                <span class="metric-label">Active (30d)</span>
+                                <span class="metric-value" id="dashActiveUsers">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                                </svg>
+                            </div>
+                            <div class="admin-card-title">Subscriptions</div>
+                        </div>
+                        <div class="admin-card-content">
+                            <div class="admin-metric">
+                                <span class="metric-label">Active</span>
+                                <span class="metric-value" id="dashActiveSubscriptions">0</span>
+                            </div>
+                            <div class="admin-metric">
+                                <span class="metric-label">Expired</span>
+                                <span class="metric-value" id="dashExpiredSubscriptions">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7,14A3,3 0 0,0 10,17A3,3 0 0,0 13,14A3,3 0 0,0 10,11A3,3 0 0,0 7,14M12.65,10C11.83,7.67 9.61,6 7,6A6,6 0 0,0 1,12A6,6 0 0,0 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z"/>
+                                </svg>
+                            </div>
+                            <div class="admin-card-title">Keys</div>
+                        </div>
+                        <div class="admin-card-content">
+                            <div class="admin-metric">
+                                <span class="metric-label">Total</span>
+                                <span class="metric-value" id="dashTotalKeys">0</span>
+                            </div>
+                            <div class="admin-metric">
+                                <span class="metric-label">Redeemed</span>
+                                <span class="metric-value" id="dashRedeemedKeys">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
+                                </svg>
+                            </div>
+                            <div class="admin-card-title">Revenue</div>
+                        </div>
+                        <div class="admin-card-content">
+                            <div class="admin-metric">
+                                <span class="metric-label">Total</span>
+                                <span class="metric-value" id="dashTotalRevenue">$0</span>
+                            </div>
+                            <div class="admin-metric">
+                                <span class="metric-label">This Month</span>
+                                <span class="metric-value" id="dashMonthlyRevenue">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="activity-log">
+                    <div class="activity-log-header">
+                        <h3 class="activity-log-title">Recent Activity</h3>
+                    </div>
+                    <div class="activity-log-list" id="recentActivityList">
+                        <div class="admin-loading">
+                            <div class="spinner"></div>
+                            <p>Loading activity...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">Analytics</h1>
+                    <p class="admin-subtitle">Performance metrics and trends</p>
+                </div>
+
+                <!-- Charts -->
+                <div class="admin-chart-container">
+                    <div class="admin-chart-header">
+                        <h3 class="admin-chart-title">User Registrations</h3>
+                        <div class="admin-chart-filters">
+                            <button class="chart-filter-btn active" onclick="changeChartPeriod('7d')">7 Days</button>
+                            <button class="chart-filter-btn" onclick="changeChartPeriod('30d')">30 Days</button>
+                            <button class="chart-filter-btn" onclick="changeChartPeriod('90d')">90 Days</button>
+                        </div>
+                    </div>
+                    <div class="admin-chart" id="userChart">
+                        Chart will be displayed here
+                    </div>
+                </div>
+
+                <div class="admin-chart-container">
+                    <div class="admin-chart-header">
+                        <h3 class="admin-chart-title">Revenue Trends</h3>
+                        <div class="admin-chart-filters">
+                            <button class="chart-filter-btn active" onclick="changeRevenuePeriod('7d')">7 Days</button>
+                            <button class="chart-filter-btn" onclick="changeRevenuePeriod('30d')">30 Days</button>
+                            <button class="chart-filter-btn" onclick="changeRevenuePeriod('90d')">90 Days</button>
+                        </div>
+                    </div>
+                    <div class="admin-chart" id="revenueChart">
+                        Chart will be displayed here
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Health Section -->
+            <section id="health-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">System Health</h1>
+                    <p class="admin-subtitle">Monitor system performance and status</p>
+                </div>
+
+                <div class="system-health" id="systemHealthContainer">
+                    <div class="admin-loading">
+                        <div class="spinner"></div>
+                        <p>Loading system health...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">User Management</h1>
+                    <p class="admin-subtitle">Manage user accounts and permissions</p>
+                </div>
+
+                <div class="admin-action-bar">
+                    <div class="admin-action-buttons">
+                        <button class="admin-btn admin-btn-primary" onclick="showCreateUserModal()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                            Add User
+                        </button>
+                        <button class="admin-btn admin-btn-outline" onclick="exportUsers()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bulk Actions Bar -->
+                <div class="bulk-actions-bar" id="usersBulkActions">
+                    <div class="bulk-actions-info">
+                        <span id="selectedUsersCount">0</span> users selected
+                    </div>
+                    <div class="bulk-actions-buttons">
+                        <button class="bulk-action-btn" onclick="bulkActionUsers('activate')">Activate</button>
+                        <button class="bulk-action-btn" onclick="bulkActionUsers('deactivate')">Deactivate</button>
+                        <button class="bulk-action-btn danger" onclick="bulkActionUsers('delete')">Delete</button>
+                    </div>
+                </div>
+
+                <!-- Users Table -->
+                <div class="admin-table-container">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">All Users</h3>
+                        <div class="admin-table-actions">
+                            <div class="admin-search">
+                                <svg class="admin-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                                </svg>
+                                <input type="text" class="admin-search-input" placeholder="Search users..." id="usersSearch">
+                            </div>
+                            <select class="admin-filter-select" id="usersFilter">
+                                <option value="all">All Users</option>
+                                <option value="user">Users</option>
+                                <option value="staff">Staff</option>
+                                <option value="admin">Admins</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="admin-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAllUsers" onchange="toggleSelectAllUsers()">
+                                </th>
+                                <th class="sortable" onclick="sortUsersTable('email')">User</th>
+                                <th class="sortable" onclick="sortUsersTable('role')">Role</th>
+                                <th class="sortable" onclick="sortUsersTable('created_at')">Joined</th>
+                                <th class="sortable" onclick="sortUsersTable('last_login')">Last Login</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="admin-loading">
+                                        <div class="spinner"></div>
+                                        <p>Loading users...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="admin-pagination" id="usersPagination">
+                        <div class="pagination-info">
+                            Showing <span id="usersStart">0</span> to <span id="usersEnd">0</span> of <span id="usersTotal">0</span> users
+                        </div>
+                        <div class="pagination-controls" id="usersPaginationControls">
+                            <!-- Pagination buttons will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Subscriptions Section -->
+            <section id="subscriptions-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">Subscription Management</h1>
+                    <p class="admin-subtitle">Monitor and manage user subscriptions</p>
+                </div>
+
+                <div class="admin-table-container">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">Active Subscriptions</h3>
+                        <div class="admin-table-actions">
+                            <div class="admin-search">
+                                <svg class="admin-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                                </svg>
+                                <input type="text" class="admin-search-input" placeholder="Search subscriptions..." id="subscriptionsSearch">
+                            </div>
+                            <select class="admin-filter-select" id="subscriptionsFilter">
+                                <option value="all">All Subscriptions</option>
+                                <option value="active">Active</option>
+                                <option value="expired">Expired</option>
+                                <option value="expiring">Expiring Soon</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="admin-table" id="subscriptionsTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" onclick="sortSubscriptionsTable('user_email')">User</th>
+                                <th class="sortable" onclick="sortSubscriptionsTable('product_name')">Product</th>
+                                <th class="sortable" onclick="sortSubscriptionsTable('created_at')">Started</th>
+                                <th class="sortable" onclick="sortSubscriptionsTable('expires_at')">Expires</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subscriptionsTableBody">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="admin-loading">
+                                        <div class="spinner"></div>
+                                        <p>Loading subscriptions...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="admin-pagination" id="subscriptionsPagination">
+                        <div class="pagination-info">
+                            Showing <span id="subscriptionsStart">0</span> to <span id="subscriptionsEnd">0</span> of <span id="subscriptionsTotal">0</span> subscriptions
+                        </div>
+                        <div class="pagination-controls" id="subscriptionsPaginationControls">
+                            <!-- Pagination buttons will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">Product Management</h1>
+                    <p class="admin-subtitle">Create and manage subscription products</p>
+                </div>
+
+                <div class="admin-action-bar">
+                    <div class="admin-action-buttons">
+                        <button class="admin-btn admin-btn-primary" onclick="showCreateProductModal()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                            Add Product
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-table-container">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">Products</h3>
+                    </div>
+
+                    <table class="admin-table" id="productsTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" onclick="sortProductsTable('name')">Product</th>
+                                <th class="sortable" onclick="sortProductsTable('price')">Price</th>
+                                <th class="sortable" onclick="sortProductsTable('duration_days')">Duration</th>
+                                <th class="sortable" onclick="sortProductsTable('created_at')">Created</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="admin-loading">
+                                        <div class="spinner"></div>
+                                        <p>Loading products...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Keys Section -->
+            <section id="keys-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">Keys Management</h1>
+                    <p class="admin-subtitle">Generate and manage subscription keys</p>
+                </div>
+
+                <div class="admin-action-bar">
+                    <div class="admin-action-buttons">
+                        <button class="admin-btn admin-btn-primary" onclick="showGenerateKeysModal()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                            Generate Keys
+                        </button>
+                        <button class="admin-btn admin-btn-outline" onclick="exportKeys()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-table-container">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">All Keys</h3>
+                        <div class="admin-table-actions">
+                            <div class="admin-search">
+                                <svg class="admin-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                                </svg>
+                                <input type="text" class="admin-search-input" placeholder="Search keys..." id="keysSearch">
+                            </div>
+                            <select class="admin-filter-select" id="keysFilter">
+                                <option value="all">All Keys</option>
+                                <option value="unredeemed">Unredeemed</option>
+                                <option value="redeemed">Redeemed</option>
+                                <option value="expired">Expired</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="admin-table" id="keysTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" onclick="sortKeysTable('key_code')">Key Code</th>
+                                <th class="sortable" onclick="sortKeysTable('product_name')">Product</th>
+                                <th class="sortable" onclick="sortKeysTable('created_at')">Generated</th>
+                                <th class="sortable" onclick="sortKeysTable('redeemed_at')">Redeemed</th>
+                                <th class="sortable" onclick="sortKeysTable('expires_at')">Expires</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="keysTableBody">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="admin-loading">
+                                        <div class="spinner"></div>
+                                        <p>Loading keys...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="admin-pagination" id="keysPagination">
+                        <div class="pagination-info">
+                            Showing <span id="keysStart">0</span> to <span id="keysEnd">0</span> of <span id="keysTotal">0</span> keys
+                        </div>
+                        <div class="pagination-controls" id="keysPaginationControls">
+                            <!-- Pagination buttons will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Purchases Section -->
+            <section id="purchases-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">Purchase History</h1>
+                    <p class="admin-subtitle">Monitor all purchase transactions</p>
+                </div>
+
+                <div class="admin-table-container">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">All Purchases</h3>
+                        <div class="admin-table-actions">
+                            <div class="admin-search">
+                                <svg class="admin-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                                </svg>
+                                <input type="text" class="admin-search-input" placeholder="Search purchases..." id="purchasesSearch">
+                            </div>
+                            <select class="admin-filter-select" id="purchasesFilter">
+                                <option value="all">All Purchases</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="admin-table" id="purchasesTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" onclick="sortPurchasesTable('user_email')">User</th>
+                                <th class="sortable" onclick="sortPurchasesTable('product_name')">Product</th>
+                                <th class="sortable" onclick="sortPurchasesTable('amount')">Amount</th>
+                                <th class="sortable" onclick="sortPurchasesTable('created_at')">Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchasesTableBody">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="admin-loading">
+                                        <div class="spinner"></div>
+                                        <p>Loading purchases...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="admin-pagination" id="purchasesPagination">
+                        <div class="pagination-info">
+                            Showing <span id="purchasesStart">0</span> to <span id="purchasesEnd">0</span> of <span id="purchasesTotal">0</span> purchases
+                        </div>
+                        <div class="pagination-controls" id="purchasesPaginationControls">
+                            <!-- Pagination buttons will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Logs Section -->
+            <section id="logs-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">System Logs</h1>
+                    <p class="admin-subtitle">View system activity and audit logs</p>
+                </div>
+
+                <div class="admin-table-container">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">Audit Logs</h3>
+                        <div class="admin-table-actions">
+                            <div class="admin-search">
+                                <svg class="admin-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                                </svg>
+                                <input type="text" class="admin-search-input" placeholder="Search logs..." id="logsSearch">
+                            </div>
+                            <select class="admin-filter-select" id="logsFilter">
+                                <option value="all">All Actions</option>
+                                <option value="LOGIN">Login</option>
+                                <option value="LOGOUT">Logout</option>
+                                <option value="REGISTER">Register</option>
+                                <option value="KEY_REDEEM">Key Redeem</option>
+                                <option value="PURCHASE">Purchase</option>
+                                <option value="ADMIN">Admin Actions</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <table class="admin-table" id="logsTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable" onclick="sortLogsTable('created_at')">Timestamp</th>
+                                <th class="sortable" onclick="sortLogsTable('action')">Action</th>
+                                <th class="sortable" onclick="sortLogsTable('user_email')">User</th>
+                                <th>Details</th>
+                                <th>IP Address</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTableBody">
+                            <tr>
+                                <td colspan="5">
+                                    <div class="admin-loading">
+                                        <div class="spinner"></div>
+                                        <p>Loading logs...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="admin-pagination" id="logsPagination">
+                        <div class="pagination-info">
+                            Showing <span id="logsStart">0</span> to <span id="logsEnd">0</span> of <span id="logsTotal">0</span> logs
+                        </div>
+                        <div class="pagination-controls" id="logsPaginationControls">
+                            <!-- Pagination buttons will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Maintenance Section -->
+            <section id="maintenance-section" class="admin-section-content">
+                <div class="admin-header">
+                    <h1 class="admin-title">System Maintenance</h1>
+                    <p class="admin-subtitle">Perform system cleanup and maintenance tasks</p>
+                </div>
+
+                <div class="admin-form-container">
+                    <div class="admin-form-header">
+                        <h3 class="admin-form-title">Cleanup Operations</h3>
+                        <p class="admin-form-description">Select maintenance operations to perform</p>
+                    </div>
+
+                    <form id="maintenanceForm" class="maintenance-form">
+                        <div class="maintenance-options">
+                            <label class="maintenance-option">
+                                <input type="checkbox" name="operations" value="expired_subscriptions">
+                                <div class="option-content">
+                                    <h4>Deactivate Expired Subscriptions</h4>
+                                    <p>Clean up subscriptions that have expired but are still marked as active</p>
+                                </div>
+                            </label>
+
+                            <label class="maintenance-option">
+                                <input type="checkbox" name="operations" value="old_logs">
+                                <div class="option-content">
+                                    <h4>Clean Old Audit Logs</h4>
+                                    <p>Remove audit logs older than 90 days to free up database space</p>
+                                </div>
+                            </label>
+
+                            <label class="maintenance-option">
+                                <input type="checkbox" name="operations" value="unused_keys">
+                                <div class="option-content">
+                                    <h4>Deactivate Expired Keys</h4>
+                                    <p>Mark expired unused keys as inactive</p>
+                                </div>
+                            </label>
+
+                            <label class="maintenance-option">
+                                <input type="checkbox" name="operations" value="failed_logins">
+                                <div class="option-content">
+                                    <h4>Clean Failed Login Attempts</h4>
+                                    <p>Remove failed login attempt records older than 7 days</p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="admin-form-actions">
+                            <button type="button" class="admin-btn admin-btn-outline" onclick="resetMaintenanceForm()">Reset</button>
+                            <button type="submit" class="admin-btn admin-btn-primary" id="runMaintenanceBtn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                                </svg>
+                                Run Maintenance
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="maintenance-results" id="maintenanceResults" style="display: none;">
+                    <div class="admin-form-container">
+                        <div class="admin-form-header">
+                            <h3 class="admin-form-title">Maintenance Results</h3>
+                        </div>
+                        <div id="maintenanceResultsContent">
+                            <!-- Results will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Include modals component -->
+    <div id="modalsContainer"></div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        // Admin Panel JavaScript
+        class AdminManager {
+            constructor() {
+                this.currentSection = 'dashboard';
+                this.dashboardData = null;
+                this.users = [];
+                this.subscriptions = [];
+                this.products = [];
+                this.keys = [];
+                this.purchases = [];
+                this.logs = [];
+                this.currentSort = {};
+                this.currentFilters = {};
+                this.currentPage = {};
+                this.pageSize = 20;
+                this.init();
+            }
+
+            async init() {
+                // Check admin permissions
+                if (!this.checkAdminAuth()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                this.setupEventListeners();
+                this.updateNavigation();
+                await this.loadDashboardData();
+                await this.loadModals();
+            }
+
+            checkAdminAuth() {
+                const token = localStorage.getItem('token');
+                const user = localStorage.getItem('user');
+                
+                if (!token || !user) return false;
+                
+                const userData = JSON.parse(user);
+                return userData.role === 'admin' || userData.role === 'staff';
+            }
+
+            setupEventListeners() {
+                // Search inputs
+                document.getElementById('usersSearch')?.addEventListener('input', (e) => this.searchUsers(e.target.value));
+                document.getElementById('subscriptionsSearch')?.addEventListener('input', (e) => this.searchSubscriptions(e.target.value));
+                document.getElementById('keysSearch')?.addEventListener('input', (e) => this.searchKeys(e.target.value));
+                document.getElementById('purchasesSearch')?.addEventListener('input', (e) => this.searchPurchases(e.target.value));
+                document.getElementById('logsSearch')?.addEventListener('input', (e) => this.searchLogs(e.target.value));
+
+                // Filter selects
+                document.getElementById('usersFilter')?.addEventListener('change', (e) => this.filterUsers(e.target.value));
+                document.getElementById('subscriptionsFilter')?.addEventListener('change', (e) => this.filterSubscriptions(e.target.value));
+                document.getElementById('keysFilter')?.addEventListener('change', (e) => this.filterKeys(e.target.value));
+                document.getElementById('purchasesFilter')?.addEventListener('change', (e) => this.filterPurchases(e.target.value));
+                document.getElementById('logsFilter')?.addEventListener('change', (e) => this.filterLogs(e.target.value));
+
+                // Maintenance form
+                document.getElementById('maintenanceForm')?.addEventListener('submit', (e) => this.handleMaintenance(e));
+
+                // Bulk actions
+                document.getElementById('selectAllUsers')?.addEventListener('change', (e) => this.toggleSelectAllUsers());
+            }
+
+            updateNavigation() {
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user) {
+                    document.getElementById('userName').textContent = user.email;
+                    document.getElementById('userRole').textContent = user.role;
+                    document.getElementById('userInitials').textContent = user.email.charAt(0).toUpperCase();
+                }
+            }
+
+            async loadModals() {
+                try {
+                    const response = await fetch('../components/modals.html');
+                    const modalsHtml = await response.text();
+                    document.getElementById('modalsContainer').innerHTML = modalsHtml;
+                } catch (error) {
+                    console.error('Error loading modals:', error);
+                }
+            }
+
+            async loadDashboardData() {
+                try {
+                    this.showLoading('Loading dashboard data...');
+                    
+                    const response = await fetch(`${API_BASE_URL}/admin/dashboard`, {
+                        headers: this.getAuthHeaders()
+                    });
+
+                    if (response.ok) {
+                        this.dashboardData = await response.json();
+                        this.updateDashboard();
+                        this.updateSidebarStats();
+                    } else {
+                        this.showError('Failed to load dashboard data');
+                    }
+                } catch (error) {
+                    console.error('Error loading dashboard:', error);
+                    this.showError('Failed to load dashboard data');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            updateDashboard() {
+                if (!this.dashboardData) return;
+
+                const { overview, recentActivity } = this.dashboardData;
+
+                // Update overview cards
+                document.getElementById('dashTotalUsers').textContent = overview.totalUsers;
+                document.getElementById('dashActiveUsers').textContent = overview.activeUsers;
+                document.getElementById('dashActiveSubscriptions').textContent = overview.activeSubscriptions;
+                document.getElementById('dashExpiredSubscriptions').textContent = overview.totalKeys - overview.activeSubscriptions;
+                document.getElementById('dashTotalKeys').textContent = overview.totalKeys;
+                document.getElementById('dashRedeemedKeys').textContent = overview.redeemedKeys;
+                document.getElementById('dashTotalRevenue').textContent = this.formatCurrency(overview.totalRevenue);
+                document.getElementById('dashMonthlyRevenue').textContent = this.formatCurrency(overview.totalRevenue * 0.3); // Mock monthly
+
+                // Update recent activity
+                this.updateRecentActivity(recentActivity);
+            }
+
+            updateSidebarStats() {
+                if (!this.dashboardData) return;
+
+                const { overview, systemHealth } = this.dashboardData;
+
+                document.getElementById('totalUsersBadge').textContent = overview.totalUsers;
+                document.getElementById('activeSubsBadge').textContent = overview.activeSubscriptions;
+                document.getElementById('totalKeysBadge').textContent = overview.totalKeys;
+                document.getElementById('activeUsersCount').textContent = overview.activeUsers;
+                document.getElementById('failedLoginsCount').textContent = systemHealth?.failedLogins || 0;
+            }
+
+            updateRecentActivity(activities) {
+                const container = document.getElementById('recentActivityList');
+                
+                if (!activities || activities.length === 0) {
+                    container.innerHTML = `
+                        <div class="admin-empty-state">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                            <h3>No Recent Activity</h3>
+                            <p>No recent system activity to display</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = activities.map(activity => `
+                    <div class="activity-log-item">
+                        <div class="activity-log-icon ${this.getActivityIconClass(activity.action)}">
+                            ${this.getActivityIcon(activity.action)}
+                        </div>
+                        <div class="activity-log-content">
+                            <div class="activity-log-message">${activity.action.replace(/_/g, ' ')}</div>
+                            <div class="activity-log-details">
+                                ${activity.userEmail || 'System'} • ${activity.details || 'No details'}
+                            </div>
+                        </div>
+                        <div class="activity-log-time">
+                            ${this.formatRelativeTime(activity.timestamp)}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            getActivityIconClass(action) {
+                if (action.includes('CREATE') || action.includes('REGISTER')) return 'create';
+                if (action.includes('UPDATE') || action.includes('LOGIN')) return 'update';
+                if (action.includes('DELETE') || action.includes('LOGOUT')) return 'delete';
+                return 'update';
+            }
+
+            getActivityIcon(action) {
+                const icons = {
+                    create: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>',
+                    update: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12,6V9L16,5L12,1V4A8,8 0 0,0 4,12C4,13.57 4.46,15.03 5.24,16.26L6.7,14.8C6.25,13.97 6,13 6,12A6,6 0 0,1 12,6M18.76,7.74L17.3,9.2C17.74,10.04 18,11 18,12A6,6 0 0,1 12,18V15L8,19L12,23V20A8,8 0 0,0 20,12C20,10.43 19.54,8.97 18.76,7.74Z"/></svg>',
+                    delete: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/></svg>'
+                };
+                return icons[this.getActivityIconClass(action)] || icons.update;
+            }
+
+            async loadSystemHealth() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/admin/health`, {
+                        headers: this.getAuthHeaders()
+                    });
+
+                    if (response.ok) {
+                        const healthData = await response.json();
+                        this.updateSystemHealth(healthData);
+                    }
+                } catch (error) {
+                    console.error('Error loading system health:', error);
+                }
+            }
+
+            updateSystemHealth(health) {
+                const container = document.getElementById('systemHealthContainer');
+                
+                container.innerHTML = `
+                    <div class="system-health-header">
+                        <div class="system-health-status ${health.status}">
+                            ${this.getHealthIcon(health.status)}
+                        </div>
+                        <div class="system-health-info">
+                            <h3>System Status: ${health.status.charAt(0).toUpperCase() + health.status.slice(1)}</h3>
+                            <p>Last checked: ${this.formatDateTime(health.timestamp)}</p>
+                        </div>
+                    </div>
+                    <div class="system-health-metrics">
+                        <div class="health-metric">
+                            <div class="health-metric-label">Database</div>
+                            <div class="health-metric-value">${health.checks.database}</div>
+                            <div class="health-metric-status good">Connected</div>
+                        </div>
+                        <div class="health-metric">
+                            <div class="health-metric-label">Active Connections</div>
+                            <div class="health-metric-value">${health.checks.activeConnections}</div>
+                            <div class="health-metric-status ${health.checks.activeConnections > 50 ? 'warning' : 'good'}">
+                                ${health.checks.activeConnections > 50 ? 'High' : 'Normal'}
+                            </div>
+                        </div>
+                        <div class="health-metric">
+                            <div class="health-metric-label">Failed Logins (1h)</div>
+                            <div class="health-metric-value">${health.checks.recentLoginFailures}</div>
+                            <div class="health-metric-status ${health.checks.recentLoginFailures > 10 ? 'warning' : 'good'}">
+                                ${health.checks.recentLoginFailures > 10 ? 'High' : 'Normal'}
+                            </div>
+                        </div>
+                        <div class="health-metric">
+                            <div class="health-metric-label">Expired Subscriptions</div>
+                            <div class="health-metric-value">${health.checks.expiredSubscriptions}</div>
+                            <div class="health-metric-status ${health.checks.expiredSubscriptions > 0 ? 'warning' : 'good'}">
+                                ${health.checks.expiredSubscriptions > 0 ? 'Needs Cleanup' : 'Clean'}
+                            </div>
+                        </div>
+                    </div>
+                    ${health.issues.length > 0 ? `
+                        <div class="health-issues">
+                            <h4>Issues Found:</h4>
+                            <ul>
+                                ${health.issues.map(issue => `<li>${issue}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                `;
+            }
+
+            getHealthIcon(status) {
+                const icons = {
+                    healthy: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>',
+                    warning: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg>',
+                    critical: '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>'
+                };
+                return icons[status] || icons.warning;
+            }
+
+            async handleMaintenance(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(e.target);
+                const operations = formData.getAll('operations');
+                
+                if (operations.length === 0) {
+                    this.showError('Please select at least one maintenance operation');
+                    return;
+                }
+
+                try {
+                    this.showLoading('Running maintenance operations...');
+                    
+                    const response = await fetch(`${API_BASE_URL}/admin/maintenance/cleanup`, {
+                        method: 'POST',
+                        headers: {
+                            ...this.getAuthHeaders(),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ operations })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        this.showMaintenanceResults(data);
+                        this.showSuccess('Maintenance operations completed successfully');
+                    } else {
+                        this.showError(data.error || 'Maintenance operations failed');
+                    }
+                } catch (error) {
+                    console.error('Maintenance error:', error);
+                    this.showError('Failed to run maintenance operations');
+                } finally {
+                    this.hideLoading();
+                }
+            }
+
+            showMaintenanceResults(results) {
+                const container = document.getElementById('maintenanceResults');
+                const content = document.getElementById('maintenanceResultsContent');
+                
+                content.innerHTML = `
+                    <div class="maintenance-summary">
+                        <h4>Operations Completed:</h4>
+                        ${Object.entries(results.results).map(([operation, result]) => `
+                            <div class="maintenance-result">
+                                <strong>${operation.replace(/_/g, ' ').toUpperCase()}:</strong>
+                                ${result.message} (${result.cleaned} items processed)
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="maintenance-meta">
+                        <p><strong>Performed by:</strong> ${results.performedBy}</p>
+                        <p><strong>Timestamp:</strong> ${this.formatDateTime(results.timestamp)}</p>
+                    </div>
+                `;
+                
+                container.style.display = 'block';
+            }
+
+            // Utility functions
+            getAuthHeaders() {
+                const token = localStorage.getItem('token');
+                return {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                };
+            }
+
+            formatCurrency(amount) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(amount);
+            }
+
+            formatDateTime(dateString) {
+                return new Date(dateString).toLocaleString();
+            }
+
+            formatRelativeTime(dateString) {
+                const now = new Date();
+                const date = new Date(dateString);
+                const diff = now - date;
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(minutes / 60);
+                const days = Math.floor(hours / 24);
+
+                if (days > 0) return `${days}d ago`;
+                if (hours > 0) return `${hours}h ago`;
+                if (minutes > 0) return `${minutes}m ago`;
+                return 'Just now';
+            }
+
+            showLoading(message = 'Loading...') {
+                const overlay = document.getElementById('loadingOverlay');
+                const text = overlay.querySelector('p');
+                text.textContent = message;
+                overlay.style.display = 'flex';
+            }
+
+            hideLoading() {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
+
+            showError(message) {
+                this.showToast(message, 'error');
+            }
+
+            showSuccess(message) {
+                this.showToast(message, 'success');
+            }
+
+            showToast(message, type = 'info') {
+                // Implementation similar to dashboard.js toast system
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                
+                const icons = {
+                    success: '<path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>',
+                    error: '<path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>',
+                    info: '<path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>'
+                };
+                
+                toast.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        ${icons[type] || icons.info}
+                    </svg>
+                    <span>${message}</span>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => toast.classList.add('show'), 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, type === 'error' ? 6000 : 4000);
+            }
+        }
+
+        // Global functions
+        function showAdminSection(sectionName) {
+            // Update sidebar
+            document.querySelectorAll('.admin-menu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[onclick="showAdminSection('${sectionName}')"]`).classList.add('active');
+            
+            // Update sections
+            document.querySelectorAll('.admin-section-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`${sectionName}-section`).classList.add('active');
+
+            // Load section data
+            switch (sectionName) {
+                case 'health':
+                    adminManager.loadSystemHealth();
+                    break;
+                case 'users':
+                    // Load users data
+                    break;
+                // Add other cases as needed
+            }
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        function changeChartPeriod(period) {
+            document.querySelectorAll('#analytics-section .chart-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            // Implementation for chart period change
+        }
+
+        function changeRevenuePeriod(period) {
+            // Similar to changeChartPeriod but for revenue chart
+        }
+
+        function resetMaintenanceForm() {
+            document.getElementById('maintenanceForm').reset();
+            document.getElementById('maintenanceResults').style.display = 'none';
+        }
+
+        // Initialize admin manager
+        let adminManager;
+        document.addEventListener('DOMContentLoaded', function() {
+            adminManager = new AdminManager();
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.user-menu')) {
+                    document.getElementById('userDropdown').classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

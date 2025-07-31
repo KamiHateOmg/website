@@ -1,0 +1,1297 @@
+<!-- Reusable Modal Components -->
+
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeConfirmationModal()"></div>
+    <div class="modal-content confirmation-modal">
+        <div class="modal-header">
+            <div class="modal-icon" id="confirmationIcon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/>
+                </svg>
+            </div>
+            <h3 id="confirmationTitle">Confirm Action</h3>
+            <button onclick="closeConfirmationModal()" class="modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="confirmationMessage">Are you sure you want to perform this action?</p>
+            <div class="confirmation-details" id="confirmationDetails" style="display: none;">
+                <!-- Additional details will be inserted here -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeConfirmationModal()" class="btn btn-outline" id="confirmationCancelBtn">Cancel</button>
+            <button onclick="confirmAction()" class="btn btn-danger" id="confirmationConfirmBtn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- User Details Modal -->
+<div id="userDetailsModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeUserDetailsModal()"></div>
+    <div class="modal-content user-details-modal">
+        <div class="modal-header">
+            <h3>User Details</h3>
+            <button onclick="closeUserDetailsModal()" class="modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="user-details-content" id="userDetailsContent">
+                <!-- User details will be loaded here -->
+                <div class="loading-placeholder">
+                    <div class="spinner"></div>
+                    <p>Loading user details...</p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeUserDetailsModal()" class="btn btn-outline">Close</button>
+            <div class="user-actions" id="userActions">
+                <!-- Action buttons will be added dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create User Modal -->
+<div id="createUserModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeCreateUserModal()"></div>
+    <div class="modal-content create-user-modal">
+        <div class="modal-header">
+            <h3>Create New User</h3>
+            <button onclick="closeCreateUserModal()" class="modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="createUserForm" class="modal-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="newUserEmail" class="form-label">Email Address</label>
+                        <input type="email" id="newUserEmail" name="email" class="form-input" required>
+                        <div class="form-error" id="newUserEmailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newUserRole" class="form-label">Role</label>
+                        <select id="newUserRole" name="role" class="form-select" required>
+                            <option value="">Select role...</option>
+                            <option value="user">User</option>
+                            <option value="staff">Staff</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <div class="form-error" id="newUserRoleError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newUserPassword" class="form-label">Temporary Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="newUserPassword" name="password" class="form-input" required>
+                            <button type="button" class="input-toggle" onclick="togglePasswordVisibility('newUserPassword')">
+                                <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/>
+                                </svg>
+                                <svg class="eye-off-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                                    <path d="M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.09L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.76,7.13 11.37,7 12,7Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="form-error" id="newUserPasswordError"></div>
+                        <div class="form-help">User will be required to change password on first login</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sendWelcomeEmail" class="checkbox-wrapper">
+                            <input type="checkbox" id="sendWelcomeEmail" name="sendWelcome" checked>
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Send welcome email with login instructions</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeCreateUserModal()" class="btn btn-outline">Cancel</button>
+            <button onclick="createUser()" class="btn btn-primary" id="createUserBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                </svg>
+                Create User
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Create Product Modal -->
+<div id="createProductModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeCreateProductModal()"></div>
+    <div class="modal-content create-product-modal">
+        <div class="modal-header">
+            <h3>Create New Product</h3>
+            <button onclick="closeCreateProductModal()" class="modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="createProductForm" class="modal-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" id="productName" name="name" class="form-input" required>
+                        <div class="form-error" id="productNameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPrice" class="form-label">Price (USD)</label>
+                        <input type="number" id="productPrice" name="price" class="form-input" min="0" step="0.01" required>
+                        <div class="form-error" id="productPriceError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDuration" class="form-label">Duration (Days)</label>
+                        <input type="number" id="productDuration" name="durationDays" class="form-input" min="1" required>
+                        <div class="form-help">Use 999999 for lifetime access</div>
+                        <div class="form-error" id="productDurationError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productFeatured" class="checkbox-wrapper">
+                            <input type="checkbox" id="productFeatured" name="isFeatured">
+                            <span class="checkbox-custom"></span>
+                            <span class="checkbox-label">Featured product</span>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="productDescription" class="form-label">Description</label>
+                        <textarea id="productDescription" name="description" class="form-textarea" rows="3"></textarea>
+                        <div class="form-error" id="productDescriptionError"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeCreateProductModal()" class="btn btn-outline">Cancel</button>
+            <button onclick="createProduct()" class="btn btn-primary" id="createProductBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                </svg>
+                Create Product
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Generate Keys Modal -->
+<div id="generateKeysModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeGenerateKeysModal()"></div>
+    <div class="modal-content generate-keys-modal">
+        <div class="modal-header">
+            <h3>Generate Keys</h3>
+            <button onclick="closeGenerateKeysModal()" class="modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="generateKeysForm" class="modal-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="keysProductId" class="form-label">Product</label>
+                        <select id="keysProductId" name="productId" class="form-select" required>
+                            <option value="">Select product...</option>
+                            <!-- Products will be loaded dynamically -->
+                        </select>
+                        <div class="form-error" id="keysProductIdError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="keysQuantity" class="form-label">Quantity</label>
+                        <input type="number" id="keysQuantity" name="quantity" class="form-input" min="1" max="1000" value="10" required>
+                        <div class="form-help">Maximum 1000 keys per generation</div>
+                        <div class="form-error" id="keysQuantityError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="keysExpiry" class="form-label">Key Expiry (Days)</label>
+                        <input type="number" id="keysExpiry" name="expiresInDays" class="form-input" min="1" max="365">
+                        <div class="form-help">Leave empty for no expiry</div>
+                        <div class="form-error" id="keysExpiryError"></div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="keysDescription" class="form-label">Description (Optional)</label>
+                        <textarea id="keysDescription" name="description" class="form-textarea" rows="2" placeholder="Optional description for this batch"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeGenerateKeysModal()" class="btn btn-outline">Cancel</button>
+            <button onclick="generateKeys()" class="btn btn-primary" id="generateKeysBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                </svg>
+                Generate Keys
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div id="loadingModal" class="modal loading-modal" style="display: none;">
+    <div class="modal-overlay"></div>
+    <div class="modal-content loading-content">
+        <div class="loading-animation">
+            <div class="spinner-large"></div>
+        </div>
+        <h3 id="loadingTitle">Processing...</h3>
+        <p id="loadingMessage">Please wait while we process your request.</p>
+        <div class="loading-progress" id="loadingProgress" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="loadingProgressFill"></div>
+            </div>
+            <span class="progress-text" id="loadingProgressText">0%</span>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div id="successModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeSuccessModal()"></div>
+    <div class="modal-content success-modal">
+        <div class="modal-header">
+            <div class="success-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                </svg>
+            </div>
+            <h3 id="successTitle">Success!</h3>
+        </div>
+        <div class="modal-body">
+            <p id="successMessage">Operation completed successfully.</p>
+            <div class="success-details" id="successDetails" style="display: none;">
+                <!-- Additional success details -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeSuccessModal()" class="btn btn-primary">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div id="errorModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeErrorModal()"></div>
+    <div class="modal-content error-modal">
+        <div class="modal-header">
+            <div class="error-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                </svg>
+            </div>
+            <h3 id="errorTitle">Error</h3>
+            <button onclick="closeErrorModal()" class="modal-close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="errorMessage">An error occurred while processing your request.</p>
+            <div class="error-details" id="errorDetails" style="display: none;">
+                <!-- Error details will be shown here -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeErrorModal()" class="btn btn-outline">Close</button>
+            <button onclick="retryLastAction()" class="btn btn-primary" id="errorRetryBtn" style="display: none;">Retry</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Styles -->
+<style>
+/* Base Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(13, 17, 23, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+    padding: 1rem;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+.modal-content {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-large);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+    transform: scale(0.95);
+    transition: transform var(--transition-normal);
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 2rem 0;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+    font-size: var(--font-size-xl);
+    color: var(--text-primary);
+    margin: 0;
+    font-weight: 700;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+    background: var(--tertiary-bg);
+}
+
+.modal-body {
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding: 0 2rem 2rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+
+/* Modal Form Styles */
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: var(--tertiary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    font-family: inherit;
+    transition: all var(--transition-fast);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    background: var(--quaternary-bg);
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper .form-input {
+    padding-right: 3rem;
+}
+
+.input-toggle {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all var(--transition-fast);
+}
+
+.input-toggle:hover {
+    color: var(--text-primary);
+    background: var(--quaternary-bg);
+}
+
+.form-error {
+    color: var(--accent-red);
+    font-size: var(--font-size-sm);
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.form-help {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    margin-top: 0.5rem;
+}
+
+/* Checkbox Styles */
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    gap: 0.75rem;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--tertiary-bg);
+    position: relative;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.checkbox-wrapper:hover .checkbox-custom {
+    border-color: var(--accent-blue);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkbox-custom {
+    background: var(--gradient-primary);
+    border-color: var(--accent-blue);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+}
+
+.checkbox-label {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+/* Specific Modal Styles */
+.confirmation-modal .modal-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+}
+
+.confirmation-modal .modal-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: var(--accent-orange);
+}
+
+.confirmation-modal.danger .modal-icon {
+    background: var(--accent-red);
+}
+
+.confirmation-modal.success .modal-icon {
+    background: var(--accent-green);
+}
+
+.confirmation-details {
+    background: var(--tertiary-bg);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+/* Success Modal */
+.success-modal .modal-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto;
+}
+
+.success-details {
+    background: rgba(63, 185, 80, 0.1);
+    border: 1px solid rgba(63, 185, 80, 0.2);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+/* Error Modal */
+.error-modal .modal-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+}
+
+.error-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0 auto;
+}
+
+.error-details {
+    background: rgba(248, 81, 73, 0.1);
+    border: 1px solid rgba(248, 81, 73, 0.2);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-top: 1rem;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+/* Loading Modal */
+.loading-modal {
+    backdrop-filter: blur(12px);
+}
+
+.loading-content {
+    text-align: center;
+    padding: 3rem 2rem;
+    border: none;
+    background: rgba(22, 27, 34, 0.95);
+    backdrop-filter: blur(12px);
+    max-width: 400px;
+}
+
+.loading-animation {
+    margin-bottom: 2rem;
+}
+
+.spinner-large {
+    width: 64px;
+    height: 64px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+.loading-content h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.loading-content p {
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.loading-progress {
+    margin-top: 2rem;
+}
+
+.progress-bar {
+    height: 8px;
+    background: var(--quaternary-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 4px;
+    transition: width var(--transition-normal);
+    width: 0%;
+}
+
+.progress-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+/* User Details Modal */
+.user-details-modal {
+    max-width: 700px;
+}
+
+.user-details-content {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.user-detail-section {
+    background: var(--tertiary-bg);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+}
+
+.user-detail-section h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: var(--font-size-lg);
+}
+
+.user-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.user-detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.detail-value {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.user-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Loading Placeholder */
+.loading-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 1rem;
+}
+
+.loading-placeholder .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top: 3px solid var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal {
+        padding: 0.5rem;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        max-height: 95vh;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .user-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .confirmation-modal .modal-icon,
+    .success-icon,
+    .error-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .loading-content {
+        padding: 2rem 1rem;
+    }
+
+    .spinner-large {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+    .modal-content {
+        background: rgba(22, 27, 34, 0.98);
+        backdrop-filter: blur(12px);
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .modal-content {
+        border-width: 2px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        border-width: 3px;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .modal,
+    .modal-content,
+    .spinner-large,
+    .loading-placeholder .spinner {
+        transition: none;
+        animation: none;
+    }
+}
+</style>
+
+<!-- Modal Component JavaScript -->
+<script>
+class ModalManager {
+    constructor() {
+        this.activeModal = null;
+        this.confirmationCallback = null;
+        this.retryCallback = null;
+        this.init();
+    }
+
+    init() {
+        this.setupGlobalEventListeners();
+    }
+
+    setupGlobalEventListeners() {
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.activeModal) {
+                this.closeModal(this.activeModal);
+            }
+        });
+
+        // Prevent body scroll when modal is open
+        document.addEventListener('modal:open', () => {
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.addEventListener('modal:close', () => {
+            document.body.style.overflow = 'auto';
+        });
+    }
+
+    showModal(modalId) {
+        this.closeAllModals();
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+            this.activeModal = modalId;
+            document.dispatchEvent(new CustomEvent('modal:open'));
+        }
+    }
+
+    closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                if (this.activeModal === modalId) {
+                    this.activeModal = null;
+                    document.dispatchEvent(new CustomEvent('modal:close'));
+                }
+            }, 300);
+        }
+    }
+
+    closeAllModals() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+        });
+        this.activeModal = null;
+        document.dispatchEvent(new CustomEvent('modal:close'));
+    }
+
+    // Confirmation Modal
+    showConfirmation(options = {}) {
+        const {
+            title = 'Confirm Action',
+            message = 'Are you sure you want to perform this action?',
+            confirmText = 'Confirm',
+            cancelText = 'Cancel',
+            type = 'warning', // warning, danger, success
+            details = null,
+            onConfirm = () => {},
+            onCancel = () => {}
+        } = options;
+
+        document.getElementById('confirmationTitle').textContent = title;
+        document.getElementById('confirmationMessage').textContent = message;
+        document.getElementById('confirmationConfirmBtn').textContent = confirmText;
+        document.getElementById('confirmationCancelBtn').textContent = cancelText;
+
+        // Set icon and styling based on type
+        const modal = document.getElementById('confirmationModal');
+        const icon = document.getElementById('confirmationIcon');
+        modal.className = `modal confirmation-modal ${type}`;
+
+        if (type === 'danger') {
+            icon.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>';
+        } else if (type === 'success') {
+            icon.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>';
+        } else {
+            icon.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg>';
+        }
+
+        // Show/hide details
+        const detailsElement = document.getElementById('confirmationDetails');
+        if (details) {
+            detailsElement.innerHTML = details;
+            detailsElement.style.display = 'block';
+        } else {
+            detailsElement.style.display = 'none';
+        }
+
+        this.confirmationCallback = onConfirm;
+        this.cancelCallback = onCancel;
+        this.showModal('confirmationModal');
+    }
+
+    // Success Modal
+    showSuccess(options = {}) {
+        const {
+            title = 'Success!',
+            message = 'Operation completed successfully.',
+            details = null
+        } = options;
+
+        document.getElementById('successTitle').textContent = title;
+        document.getElementById('successMessage').textContent = message;
+
+        const detailsElement = document.getElementById('successDetails');
+        if (details) {
+            detailsElement.innerHTML = details;
+            detailsElement.style.display = 'block';
+        } else {
+            detailsElement.style.display = 'none';
+        }
+
+        this.showModal('successModal');
+    }
+
+    // Error Modal
+    showError(options = {}) {
+        const {
+            title = 'Error',
+            message = 'An error occurred while processing your request.',
+            details = null,
+            showRetry = false,
+            onRetry = null
+        } = options;
+
+        document.getElementById('errorTitle').textContent = title;
+        document.getElementById('errorMessage').textContent = message;
+
+        const detailsElement = document.getElementById('errorDetails');
+        if (details) {
+            detailsElement.innerHTML = `<pre>${details}</pre>`;
+            detailsElement.style.display = 'block';
+        } else {
+            detailsElement.style.display = 'none';
+        }
+
+        const retryBtn = document.getElementById('errorRetryBtn');
+        if (showRetry && onRetry) {
+            retryBtn.style.display = 'block';
+            this.retryCallback = onRetry;
+        } else {
+            retryBtn.style.display = 'none';
+        }
+
+        this.showModal('errorModal');
+    }
+
+    // Loading Modal
+    showLoading(options = {}) {
+        const {
+            title = 'Processing...',
+            message = 'Please wait while we process your request.',
+            showProgress = false,
+            progress = 0
+        } = options;
+
+        document.getElementById('loadingTitle').textContent = title;
+        document.getElementById('loadingMessage').textContent = message;
+
+        const progressElement = document.getElementById('loadingProgress');
+        if (showProgress) {
+            progressElement.style.display = 'block';
+            this.updateLoadingProgress(progress);
+        } else {
+            progressElement.style.display = 'none';
+        }
+
+        this.showModal('loadingModal');
+    }
+
+    updateLoadingProgress(progress) {
+        const progressFill = document.getElementById('loadingProgressFill');
+        const progressText = document.getElementById('loadingProgressText');
+        
+        progressFill.style.width = `${progress}%`;
+        progressText.textContent = `${Math.round(progress)}%`;
+    }
+
+    hideLoading() {
+        this.closeModal('loadingModal');
+    }
+
+    // User Details Modal
+    showUserDetails(userData) {
+        const content = document.getElementById('userDetailsContent');
+        
+        content.innerHTML = `
+            <div class="user-detail-section">
+                <h4>Account Information</h4>
+                <div class="user-detail-grid">
+                    <div class="user-detail-item">
+                        <span class="detail-label">Email</span>
+                        <span class="detail-value">${userData.email}</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="detail-label">Role</span>
+                        <span class="detail-value">${userData.role}</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="detail-label">Status</span>
+                        <span class="detail-value">${userData.isActive ? 'Active' : 'Inactive'}</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="detail-label">Joined</span>
+                        <span class="detail-value">${this.formatDate(userData.createdAt)}</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="detail-label">Last Login</span>
+                        <span class="detail-value">${userData.lastLogin ? this.formatDate(userData.lastLogin) : 'Never'}</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="detail-label">Email Verified</span>
+                        <span class="detail-value">${userData.emailVerified ? 'Yes' : 'No'}</span>
+                    </div>
+                </div>
+            </div>
+            
+            ${userData.subscription ? `
+                <div class="user-detail-section">
+                    <h4>Subscription</h4>
+                    <div class="user-detail-grid">
+                        <div class="user-detail-item">
+                            <span class="detail-label">Product</span>
+                            <span class="detail-value">${userData.subscription.productName}</span>
+                        </div>
+                        <div class="user-detail-item">
+                            <span class="detail-label">Status</span>
+                            <span class="detail-value">${userData.subscription.isActive ? 'Active' : 'Inactive'}</span>
+                        </div>
+                        <div class="user-detail-item">
+                            <span class="detail-label">Expires</span>
+                            <span class="detail-value">${this.formatDate(userData.subscription.expiresAt)}</span>
+                        </div>
+                    </div>
+                </div>
+            ` : ''}
+        `;
+
+        // Update action buttons
+        const actions = document.getElementById('userActions');
+        actions.innerHTML = `
+            <button class="btn btn-outline btn-small" onclick="editUser('${userData.id}')">Edit</button>
+            <button class="btn btn-outline btn-small" onclick="viewUserHistory('${userData.id}')">History</button>
+            ${userData.isActive ? 
+                `<button class="btn btn-danger btn-small" onclick="deactivateUser('${userData.id}')">Deactivate</button>` :
+                `<button class="btn btn-success btn-small" onclick="activateUser('${userData.id}')">Activate</button>`
+            }
+        `;
+
+        this.showModal('userDetailsModal');
+    }
+
+    formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+}
+
+// Global modal functions
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const eyeIcon = input.parentElement.querySelector('.eye-icon');
+    const eyeOffIcon = input.parentElement.querySelector('.eye-off-icon');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        eyeIcon.style.display = 'none';
+        eyeOffIcon.style.display = 'block';
+    } else {
+        input.type = 'password';
+        eyeIcon.style.display = 'block';
+        eyeOffIcon.style.display = 'none';
+    }
+}
+
+// Confirmation Modal Functions
+function closeConfirmationModal() {
+    if (window.modalManager.cancelCallback) {
+        window.modalManager.cancelCallback();
+    }
+    window.modalManager.closeModal('confirmationModal');
+}
+
+function confirmAction() {
+    if (window.modalManager.confirmationCallback) {
+        window.modalManager.confirmationCallback();
+    }
+    window.modalManager.closeModal('confirmationModal');
+}
+
+// Success Modal Functions
+function closeSuccessModal() {
+    window.modalManager.closeModal('successModal');
+}
+
+// Error Modal Functions
+function closeErrorModal() {
+    window.modalManager.closeModal('errorModal');
+}
+
+function retryLastAction() {
+    if (window.modalManager.retryCallback) {
+        window.modalManager.retryCallback();
+    }
+    window.modalManager.closeModal('errorModal');
+}
+
+// User Details Modal Functions
+function closeUserDetailsModal() {
+    window.modalManager.closeModal('userDetailsModal');
+}
+
+// Create User Modal Functions
+function showCreateUserModal() {
+    window.modalManager.showModal('createUserModal');
+}
+
+function closeCreateUserModal() {
+    document.getElementById('createUserForm').reset();
+    window.modalManager.closeModal('createUserModal');
+}
+
+function createUser() {
+    console.log('Creating user...');
+    // Implementation would be in the calling page
+}
+
+// Create Product Modal Functions
+function showCreateProductModal() {
+    window.modalManager.showModal('createProductModal');
+}
+
+function closeCreateProductModal() {
+    document.getElementById('createProductForm').reset();
+    window.modalManager.closeModal('createProductModal');
+}
+
+function createProduct() {
+    console.log('Creating product...');
+    // Implementation would be in the calling page
+}
+
+// Generate Keys Modal Functions
+function showGenerateKeysModal() {
+    window.modalManager.showModal('generateKeysModal');
+}
+
+function closeGenerateKeysModal() {
+    document.getElementById('generateKeysForm').reset();
+    window.modalManager.closeModal('generateKeysModal');
+}
+
+function generateKeys() {
+    console.log('Generating keys...');
+    // Implementation would be in the calling page
+}
+
+// Placeholder functions for user actions
+function editUser(userId) {
+    console.log('Editing user:', userId);
+}
+
+function viewUserHistory(userId) {
+    console.log('Viewing user history:', userId);
+}
+
+function activateUser(userId) {
+    console.log('Activating user:', userId);
+}
+
+function deactivateUser(userId) {
+    console.log('Deactivating user:', userId);
+}
+
+// Initialize modal manager when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof window.modalManager === 'undefined') {
+        window.modalManager = new ModalManager();
+    }
+});
+
+// Export for use in other scripts
+window.ModalManager = ModalManager;
+</script>

@@ -1,0 +1,891 @@
+<!-- Reusable Header Component -->
+<nav class="navbar" id="mainNavbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">CS2 Loader</span>
+            </a>
+        </div>
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        
+        <!-- Navigation Links -->
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" class="nav-link" data-page="home">Home</a>
+            <a href="products.html" class="nav-link" data-page="products">Products</a>
+            <a href="index.html#features" class="nav-link" data-page="features">Features</a>
+            <a href="index.html#about" class="nav-link" data-page="about">About</a>
+            
+            <!-- Admin/Staff Links (hidden by default) -->
+            <a href="dashboard.html" class="nav-link nav-user-only" data-page="dashboard" style="display: none;">Dashboard</a>
+            <a href="staff.html" class="nav-link nav-staff-only" data-page="staff" style="display: none;">Staff Panel</a>
+            <a href="admin.html" class="nav-link nav-admin-only" data-page="admin" style="display: none;">Admin Panel</a>
+        </div>
+        
+        <!-- Navigation Actions -->
+        <div class="nav-actions" id="navActions">
+            <!-- Auth Buttons (for non-authenticated users) -->
+            <div class="auth-buttons" id="authButtons">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="register.html" class="btn btn-primary">Sign Up</a>
+            </div>
+            
+            <!-- User Menu (for authenticated users) -->
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <!-- Notifications (optional) -->
+                <div class="notifications-menu" id="notificationsMenu" style="display: none;">
+                    <button class="notifications-trigger" id="notificationsTrigger" aria-label="View notifications">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21"/>
+                        </svg>
+                        <span class="notifications-badge" id="notificationsBadge" style="display: none;">0</span>
+                    </button>
+                    <div class="notifications-dropdown" id="notificationsDropdown">
+                        <div class="notifications-header">
+                            <h3>Notifications</h3>
+                            <button class="mark-all-read" onclick="markAllNotificationsRead()">Mark all read</button>
+                        </div>
+                        <div class="notifications-list" id="notificationsList">
+                            <div class="empty-notifications">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21"/>
+                                </svg>
+                                <p>No notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Avatar & Dropdown -->
+                <div class="user-avatar-menu">
+                    <button class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()" aria-label="User menu">
+                        <span id="userInitials">U</span>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <div class="user-info">
+                                <span class="user-name" id="headerUserName">User</span>
+                                <span class="user-email" id="headerUserEmail">user@example.com</span>
+                            </div>
+                            <div class="user-role-badge" id="headerUserRole">user</div>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <!-- User Menu Items -->
+                        <div class="dropdown-section">
+                            <a href="dashboard.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z"/>
+                                </svg>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="dashboard.html#profile" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                                </svg>
+                                <span>Profile</span>
+                            </a>
+                            <a href="dashboard.html#keys" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7,14A3,3 0 0,0 10,17A3,3 0 0,0 13,14A3,3 0 0,0 10,11A3,3 0 0,0 7,14M12.65,10C11.83,7.67 9.61,6 7,6A6,6 0 0,0 1,12A6,6 0 0,0 7,18C9.61,18 11.83,16.33 12.65,14H17V18H21V14H23V10H12.65Z"/>
+                                </svg>
+                                <span>My Keys</span>
+                            </a>
+                            <a href="products.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>
+                                </svg>
+                                <span>Purchase Keys</span>
+                            </a>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <!-- Staff/Admin Menu Items -->
+                        <div class="dropdown-section staff-admin-section" style="display: none;">
+                            <a href="staff.html" class="dropdown-item staff-only-item" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z"/>
+                                </svg>
+                                <span>Staff Panel</span>
+                            </a>
+                            <a href="admin.html" class="dropdown-item admin-only-item" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                                </svg>
+                                <span>Admin Panel</span>
+                            </a>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <!-- Settings & Support -->
+                        <div class="dropdown-section">
+                            <button class="dropdown-item" onclick="openSettings()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                                </svg>
+                                <span>Settings</span>
+                            </button>
+                            <a href="#" class="dropdown-item" onclick="openSupport()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,2A3,3 0 0,1 15,5V7A3,3 0 0,1 12,10A3,3 0 0,1 9,7V5A3,3 0 0,1 12,2M21,12A1,1 0 0,1 20,13H16L13.5,16.5C13.1,17.4 12.2,18 11.2,18H5V16H11.2A0.5,0.5 0 0,0 11.7,15.5L14.2,12H20A1,1 0 0,1 21,12M2.5,19A1.5,1.5 0 0,0 4,20.5A1.5,1.5 0 0,0 5.5,19A1.5,1.5 0 0,0 4,17.5A1.5,1.5 0 0,0 2.5,19Z"/>
+                                </svg>
+                                <span>Support</span>
+                            </a>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <!-- Logout -->
+                        <div class="dropdown-section">
+                            <button class="dropdown-item logout-item" onclick="logout()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z"/>
+                                </svg>
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Header Component Styles -->
+<style>
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--tertiary-bg);
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    margin: 3px 0;
+    transition: all var(--transition-fast);
+    border-radius: 1px;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Enhanced User Menu */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.notifications-menu {
+    position: relative;
+}
+
+.notifications-trigger {
+    position: relative;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.notifications-trigger:hover {
+    background: var(--tertiary-bg);
+    color: var(--text-primary);
+}
+
+.notifications-badge {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    background: var(--accent-red);
+    color: white;
+    font-size: var(--font-size-xs);
+    padding: 0.125rem 0.375rem;
+    border-radius: 10px;
+    font-weight: 600;
+    min-width: 16px;
+    text-align: center;
+}
+
+.notifications-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-large);
+    min-width: 320px;
+    max-width: 400px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--transition-normal);
+    z-index: 1000;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notifications-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.notifications-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.notifications-header h3 {
+    font-size: var(--font-size-lg);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.mark-all-read {
+    background: none;
+    border: none;
+    color: var(--accent-blue);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.mark-all-read:hover {
+    background: rgba(88, 166, 255, 0.1);
+}
+
+.notifications-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.empty-notifications {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+}
+
+.empty-notifications svg {
+    margin-bottom: 1rem;
+}
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background var(--transition-fast);
+    cursor: pointer;
+}
+
+.notification-item:hover {
+    background: var(--tertiary-bg);
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item.unread {
+    background: rgba(88, 166, 255, 0.05);
+}
+
+.notification-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.notification-icon.info {
+    background: var(--accent-blue);
+}
+
+.notification-icon.success {
+    background: var(--accent-green);
+}
+
+.notification-icon.warning {
+    background: var(--accent-orange);
+}
+
+.notification-icon.error {
+    background: var(--accent-red);
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    font-size: var(--font-size-sm);
+}
+
+.notification-message {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.notification-time {
+    color: var(--text-muted);
+    font-size: var(--font-size-xs);
+}
+
+/* Enhanced User Dropdown */
+.user-dropdown {
+    min-width: 260px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.dropdown-header {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    margin-bottom: 0.25rem;
+}
+
+.user-email {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+}
+
+.user-role-badge {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dropdown-section {
+    padding: 0.5rem 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: var(--font-size-sm);
+}
+
+.dropdown-item:hover {
+    background: var(--tertiary-bg);
+    color: var(--text-primary);
+}
+
+.dropdown-item svg {
+    flex-shrink: 0;
+}
+
+.logout-item:hover {
+    background: rgba(248, 81, 73, 0.1);
+    color: var(--accent-red);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-top: none;
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        padding: 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        z-index: 999;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-md);
+        transition: background var(--transition-fast);
+    }
+
+    .nav-link:hover {
+        background: var(--tertiary-bg);
+    }
+
+    .auth-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .user-dropdown {
+        position: fixed;
+        top: 80px;
+        right: 1rem;
+        left: 1rem;
+        min-width: auto;
+    }
+
+    .notifications-dropdown {
+        position: fixed;
+        top: 80px;
+        right: 1rem;
+        left: 1rem;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-container {
+        padding: 1rem;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .dropdown-header {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .user-role-badge {
+        align-self: flex-start;
+    }
+}
+</style>
+
+<!-- Header Component JavaScript -->
+<script>
+class HeaderManager {
+    constructor() {
+        this.isAuthenticated = false;
+        this.userData = null;
+        this.notifications = [];
+        this.init();
+    }
+
+    init() {
+        this.checkAuthentication();
+        this.setupEventListeners();
+        this.setActiveNavLink();
+        this.loadNotifications();
+    }
+
+    checkAuthentication() {
+        const token = localStorage.getItem('token');
+        const userData = localStorage.getItem('user');
+        
+        if (token && userData) {
+            this.isAuthenticated = true;
+            this.userData = JSON.parse(userData);
+            this.showUserMenu();
+            this.updateUserInfo();
+            this.showRoleBasedNavigation();
+        } else {
+            this.isAuthenticated = false;
+            this.showAuthButtons();
+        }
+    }
+
+    showUserMenu() {
+        document.getElementById('authButtons').style.display = 'none';
+        document.getElementById('userMenu').style.display = 'flex';
+        
+        // Show notifications if user has them enabled
+        if (this.userData.notifications_enabled !== false) {
+            document.getElementById('notificationsMenu').style.display = 'block';
+        }
+    }
+
+    showAuthButtons() {
+        document.getElementById('authButtons').style.display = 'flex';
+        document.getElementById('userMenu').style.display = 'none';
+    }
+
+    updateUserInfo() {
+        if (!this.userData) return;
+
+        document.getElementById('headerUserName').textContent = this.userData.username || this.userData.email;
+        document.getElementById('headerUserEmail').textContent = this.userData.email;
+        document.getElementById('headerUserRole').textContent = this.userData.role;
+        document.getElementById('userInitials').textContent = this.userData.email.charAt(0).toUpperCase();
+    }
+
+    showRoleBasedNavigation() {
+        if (!this.userData) return;
+
+        // Show user-only links
+        document.querySelectorAll('.nav-user-only').forEach(el => {
+            el.style.display = 'block';
+        });
+
+        // Show staff/admin dropdown sections
+        const staffAdminSection = document.querySelector('.staff-admin-section');
+        if (this.userData.role === 'staff' || this.userData.role === 'admin') {
+            if (staffAdminSection) staffAdminSection.style.display = 'block';
+            
+            // Show staff links
+            if (this.userData.role === 'staff' || this.userData.role === 'admin') {
+                document.querySelectorAll('.nav-staff-only, .staff-only-item').forEach(el => {
+                    el.style.display = 'block';
+                });
+            }
+            
+            // Show admin links
+            if (this.userData.role === 'admin') {
+                document.querySelectorAll('.nav-admin-only, .admin-only-item').forEach(el => {
+                    el.style.display = 'block';
+                });
+            }
+        }
+    }
+
+    setActiveNavLink() {
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const linkPage = link.getAttribute('data-page');
+            
+            if (linkPage === currentPage || 
+                (currentPage === 'index' && linkPage === 'home') ||
+                (currentPage === '' && linkPage === 'home')) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    setupEventListeners() {
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', () => {
+                mobileToggle.classList.toggle('active');
+                navLinks.classList.toggle('show');
+            });
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-container')) {
+                mobileToggle?.classList.remove('active');
+                navLinks?.classList.remove('show');
+            }
+        });
+
+        // Notifications toggle
+        const notificationsTrigger = document.getElementById('notificationsTrigger');
+        const notificationsDropdown = document.getElementById('notificationsDropdown');
+        
+        if (notificationsTrigger && notificationsDropdown) {
+            notificationsTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notificationsDropdown.classList.toggle('show');
+                document.getElementById('userDropdown').classList.remove('show');
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.notifications-menu')) {
+                document.getElementById('notificationsDropdown')?.classList.remove('show');
+            }
+            if (!e.target.closest('.user-avatar-menu')) {
+                document.getElementById('userDropdown')?.classList.remove('show');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    }
+
+    async loadNotifications() {
+        if (!this.isAuthenticated) return;
+
+        try {
+            // Mock notifications for demo - replace with actual API call
+            this.notifications = [
+                {
+                    id: 1,
+                    type: 'success',
+                    title: 'Subscription Active',
+                    message: 'Your CS2 Loader subscription is now active and ready to use.',
+                    time: new Date(Date.now() - 60000 * 30), // 30 minutes ago
+                    read: false
+                },
+                {
+                    id: 2,
+                    type: 'warning',
+                    title: 'Subscription Expiring Soon',
+                    message: 'Your subscription will expire in 3 days. Consider renewing to continue access.',
+                    time: new Date(Date.now() - 60000 * 60 * 2), // 2 hours ago
+                    read: false
+                },
+                {
+                    id: 3,
+                    type: 'info',
+                    title: 'New Features Available',
+                    message: 'CS2 Loader v3.0.1 is now available with improved performance and new features.',
+                    time: new Date(Date.now() - 60000 * 60 * 24), // 1 day ago
+                    read: true
+                }
+            ];
+
+            this.updateNotificationsBadge();
+            this.renderNotifications();
+        } catch (error) {
+            console.error('Error loading notifications:', error);
+        }
+    }
+
+    updateNotificationsBadge() {
+        const badge = document.getElementById('notificationsBadge');
+        const unreadCount = this.notifications.filter(n => !n.read).length;
+        
+        if (unreadCount > 0) {
+            badge.textContent = unreadCount;
+            badge.style.display = 'block';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    renderNotifications() {
+        const container = document.getElementById('notificationsList');
+        
+        if (this.notifications.length === 0) {
+            container.innerHTML = `
+                <div class="empty-notifications">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21"/>
+                    </svg>
+                    <p>No notifications</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = this.notifications.map(notification => `
+            <div class="notification-item ${!notification.read ? 'unread' : ''}" onclick="markNotificationRead(${notification.id})">
+                <div class="notification-icon ${notification.type}">
+                    ${this.getNotificationIcon(notification.type)}
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">${notification.title}</div>
+                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-time">${this.formatRelativeTime(notification.time)}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    getNotificationIcon(type) {
+        const icons = {
+            success: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>',
+            warning: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg>',
+            error: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>',
+            info: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>'
+        };
+        return icons[type] || icons.info;
+    }
+
+    formatRelativeTime(date) {
+        const now = new Date();
+        const diff = now - date;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (days > 0) return `${days}d ago`;
+        if (hours > 0) return `${hours}h ago`;
+        if (minutes > 0) return `${minutes}m ago`;
+        return 'Just now';
+    }
+
+    markNotificationRead(id) {
+        const notification = this.notifications.find(n => n.id === id);
+        if (notification) {
+            notification.read = true;
+            this.updateNotificationsBadge();
+            this.renderNotifications();
+        }
+    }
+
+    markAllNotificationsRead() {
+        this.notifications.forEach(n => n.read = true);
+        this.updateNotificationsBadge();
+        this.renderNotifications();
+    }
+
+    // Public methods for external use
+    refreshUserData() {
+        this.checkAuthentication();
+    }
+
+    addNotification(notification) {
+        this.notifications.unshift({
+            id: Date.now(),
+            read: false,
+            time: new Date(),
+            ...notification
+        });
+        this.updateNotificationsBadge();
+        this.renderNotifications();
+    }
+}
+
+// Global functions
+function toggleUserDropdown() {
+    const dropdown = document.getElementById('userDropdown');
+    const notificationsDropdown = document.getElementById('notificationsDropdown');
+    
+    dropdown.classList.toggle('show');
+    notificationsDropdown?.classList.remove('show');
+}
+
+function markNotificationRead(id) {
+    if (window.headerManager) {
+        window.headerManager.markNotificationRead(id);
+    }
+}
+
+function markAllNotificationsRead() {
+    if (window.headerManager) {
+        window.headerManager.markAllNotificationsRead();
+        document.getElementById('notificationsDropdown').classList.remove('show');
+    }
+}
+
+function openSettings() {
+    // Implement settings modal or redirect
+    console.log('Opening settings...');
+}
+
+function openSupport() {
+    // Implement support modal or redirect
+    console.log('Opening support...');
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+}
+
+// Initialize header manager when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    window.headerManager = new HeaderManager();
+});
+
+// Export for use in other scripts
+window.HeaderManager = HeaderManager;
+</script>
