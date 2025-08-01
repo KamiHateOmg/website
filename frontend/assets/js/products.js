@@ -1,24 +1,56 @@
-// Products Page JavaScript - Enhanced and Fixed
+// Products Page JavaScript - Debug Version with Comprehensive Logging
 // Handles product display, purchasing, and modal interactions
 
 class ProductManager {
     constructor() {
+        console.log('🔧 ProductManager: Constructor called');
         this.products = [];
         this.selectedProduct = null;
         this.isLoading = false;
+        this.isAuthenticated = false;
+        
+        console.log('🔧 ProductManager: Initial state:', {
+            products: this.products.length,
+            selectedProduct: this.selectedProduct,
+            isLoading: this.isLoading,
+            isAuthenticated: this.isAuthenticated
+        });
+        
         this.init();
     }
 
     init() {
+        console.log('🚀 ProductManager: Initializing...');
+        this.checkAuthStatus();
         this.bindEvents();
         this.loadProducts();
         this.initializeBillingToggle();
+        
+        // Reset loading state on init
+        this.isLoading = false;
+        console.log('✅ ProductManager: Initialization complete');
+    }
+
+    checkAuthStatus() {
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+        this.isAuthenticated = !!(token && user);
+        
+        console.log('🔐 Auth Status Check:', {
+            hasToken: !!token,
+            hasUser: !!user,
+            isAuthenticated: this.isAuthenticated,
+            tokenPreview: token ? token.substring(0, 20) + '...' : 'none'
+        });
     }
 
     bindEvents() {
+        console.log('🎯 ProductManager: Binding events...');
+        
         // Close modals on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
+                console.log('⌨️ Escape key pressed, closing modals');
                 this.closeAllModals();
             }
         });
@@ -26,47 +58,88 @@ class ProductManager {
         // Close modals on outside click
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal-overlay')) {
+                console.log('🖱️ Modal overlay clicked, closing modals');
                 this.closeAllModals();
             }
         });
+
+        // Listen for auth state changes
+        window.addEventListener('userLogin', (e) => {
+            console.log('👤 User login event received:', e.detail);
+            this.isAuthenticated = true;
+            this.updateButtonTexts();
+            this.handlePostLoginPurchase();
+        });
+
+        window.addEventListener('userLogout', () => {
+            console.log('👤 User logout event received');
+            this.isAuthenticated = false;
+            this.updateButtonTexts();
+        });
+        
+        console.log('✅ ProductManager: Events bound successfully');
     }
 
     async loadProducts() {
+        console.log('📦 Loading products...');
         try {
-            this.showLoading();
+            this.showLoadingProducts();
             
-            const response = await fetch(`${API_BASE_URL}/products`, {
+            const apiUrl = `${API_BASE_URL}/products`;
+            console.log('🌐 Making API request to:', apiUrl);
+            
+            const response = await fetch(apiUrl, {
                 headers: this.getAuthHeaders()
             });
             
+            console.log('📡 API Response:', {
+                status: response.status,
+                statusText: response.statusText,
+                ok: response.ok
+            });
+            
             const data = await response.json();
+            console.log('📊 API Data:', data);
             
             if (response.ok) {
                 this.products = data.products || [];
+                console.log(`✅ Products loaded successfully: ${this.products.length} products`);
+                this.products.forEach((product, index) => {
+                    console.log(`📦 Product ${index + 1}:`, {
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        durationDays: product.durationDays
+                    });
+                });
+                
                 this.renderProducts();
                 this.initializeProductCards();
             } else {
+                console.error('❌ Failed to load products:', data);
                 this.showError('Failed to load products: ' + (data.error || 'Unknown error'));
                 this.renderEmptyState();
             }
         } catch (error) {
-            console.error('Error loading products:', error);
+            console.error('💥 Error loading products:', error);
             this.showError('Failed to load products. Please check your connection.');
             this.renderEmptyState();
         } finally {
-            this.hideLoading();
+            this.hideLoadingProducts();
         }
     }
 
     renderProducts() {
+        console.log('🎨 Rendering products...');
         const grid = document.getElementById('productsGrid');
         
         if (!grid) {
-            console.error('Products grid element not found');
+            console.error('❌ Products grid element not found!');
             return;
         }
 
         if (this.products.length === 0) {
+            console.log('📦 No products to render, showing empty state');
             this.renderEmptyState();
             return;
         }
@@ -79,262 +152,175 @@ class ProductManager {
             return a.price - b.price;
         });
 
+        console.log('📦 Products sorted, generating HTML...');
         grid.innerHTML = sortedProducts.map(product => this.getProductCardHTML(product)).join('');
         
-        // Add entrance animations
+        console.log('✅ Products rendered successfully');
         this.animateProductCards();
     }
 
-    renderEmptyState() {
-        const grid = document.getElementById('productsGrid');
-        if (grid) {
-            grid.innerHTML = this.getEmptyStateHTML();
-        }
-    }
-
-    getProductCardHTML(product) {
-        const isLifetime = product.durationDays === 999999;
-        const isFree = product.price === 0;
+    // Handle both login redirect and purchase
+    handleProductAction(productId) {
+        console.log('🎯 handleProductAction called:', {
+            productId,
+            isLoading: this.isLoading,
+            isAuthenticated: this.isAuthenticated
+        });
         
-        return `
-            <div class="product-card ${product.isFeatured ? 'featured' : ''}" 
-                 data-product-id="${product.id}"
-                 data-aos="fade-up"
-                 data-aos-delay="${product.displayOrder * 100}">
-                
-                ${product.isFeatured ? '<div class="product-badge">Most Popular</div>' : ''}
-                ${isFree ? '<div class="product-badge free">Free Trial</div>' : ''}
-                ${isLifetime ? '<div class="product-badge lifetime">Lifetime</div>' : ''}
-                
-                <div class="product-header">
-                    <div class="product-icon ${this.getProductIconClass(product.durationDays)}">
-                        ${this.getProductIcon(product.durationDays)}
-                    </div>
-                    <h3 class="product-name">${this.escapeHtml(product.name)}</h3>
-                    <p class="product-description">${this.escapeHtml(product.description || '')}</p>
-                </div>
-                
-                <div class="product-pricing">
-                    <div class="price-display">
-                        <span class="price">${product.priceFormatted}</span>
-                        <span class="period">/ ${product.durationText.toLowerCase()}</span>
-                    </div>
-                    <div class="price-note">
-                        ${isFree ? 'No payment required' : 
-                          isLifetime ? 'One-time payment' : 
-                          'One-time purchase'}
-                    </div>
-                    ${this.getPricingBadges(product)}
-                </div>
-                
-                <div class="product-features">
-                    ${this.getProductFeatures(product).map(feature => `
-                        <div class="feature">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
-                            </svg>
-                            <span>${feature}</span>
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div class="product-actions">
-                    <button onclick="productManager.purchaseProduct('${product.id}')" 
-                            class="btn ${this.getButtonClass(product)} product-btn"
-                            ${this.isLoading ? 'disabled' : ''}>
-                        ${this.getButtonText(product)}
-                    </button>
-                    
-                    <button onclick="productManager.showProductDetails('${product.id}')" 
-                            class="btn btn-ghost btn-small">
-                        View Details
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
-    getProductIcon(durationDays) {
-        const icons = {
-            1: `<path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>`, // Trial
-            7: `<path d="M9,10V12H7V10H9M13,10V12H11V10H13M17,10V12H15V10H17M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M9,14V16H7V14H9M13,14V16H11V14H13M17,14V16H15V14H17Z"/>`, // Weekly
-            30: `<path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>`, // Monthly
-            365: `<path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V8H19V19M19,6H5V5H19V6Z"/>`, // Yearly
-            999999: `<path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>` // Lifetime
-        };
-
-        const iconPath = icons[durationDays] || icons[30];
-        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">${iconPath}</svg>`;
-    }
-
-    getProductIconClass(durationDays) {
-        if (durationDays === 1) return 'trial';
-        if (durationDays <= 7) return 'weekly';
-        if (durationDays <= 30) return 'monthly';
-        if (durationDays <= 365) return 'yearly';
-        return 'lifetime';
-    }
-
-    getProductFeatures(product) {
-        const baseFeatures = [
-            `${product.durationText} access`,
-            'HWID-locked security',
-            'All premium features',
-            'Regular updates'
-        ];
-
-        // Add specific features based on product type
-        if (product.durationDays === 999999) {
-            baseFeatures.push('Lifetime updates', 'VIP support');
-        } else if (product.price > 0) {
-            baseFeatures.push('Priority support');
+        if (this.isLoading) {
+            console.log('⏳ Action blocked - already loading');
+            return;
+        }
+        
+        const product = this.products.find(p => p.id === productId);
+        if (!product) {
+            console.error('❌ Product not found for ID:', productId);
+            this.showError('Product not found');
+            return;
+        }
+        
+        console.log('📦 Product found:', product.name);
+        
+        if (this.isAuthenticated) {
+            console.log('✅ User authenticated, proceeding with purchase');
+            this.purchaseProduct(productId);
         } else {
-            baseFeatures.push('Community support');
+            console.log('🔐 User not authenticated, redirecting to login');
+            // Store intended product for after login
+            localStorage.setItem('intendedPurchase', productId);
+            this.redirectToLogin();
         }
-
-        return baseFeatures;
-    }
-
-    getPricingBadges(product) {
-        let badges = '';
-        
-        if (product.isFeatured) {
-            badges += '<div class="pricing-badge featured">Recommended</div>';
-        }
-        
-        if (product.durationDays >= 180) {
-            const savings = Math.round((1 - (product.price / (product.durationDays / 30 * 29.99))) * 100);
-            if (savings > 0) {
-                badges += `<div class="pricing-badge savings">Save ${savings}%</div>`;
-            }
-        }
-        
-        return badges;
-    }
-
-    getButtonClass(product) {
-        if (product.isFeatured) return 'btn-primary';
-        if (product.price === 0) return 'btn-success';
-        return 'btn-outline';
-    }
-
-    getButtonText(product) {
-        if (this.isLoading) return 'Loading...';
-        if (product.price === 0) return 'Get Free Trial';
-        if (product.durationDays === 999999) return 'Buy Lifetime';
-        return 'Purchase Now';
-    }
-
-    getEmptyStateHTML() {
-        return `
-            <div class="empty-state">
-                <div class="empty-icon">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19,7H22V9H19V12H17V9H14V7H17V4H19V7M12,2A3,3 0 0,1 15,5V6H19A2,2 0 0,1 21,8V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V8A2,2 0 0,1 5,6H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V6H13V5A1,1 0 0,0 12,4Z"/>
-                    </svg>
-                </div>
-                <h3>No Products Available</h3>
-                <p>We're currently updating our subscription plans. Please check back soon!</p>
-                <button onclick="productManager.loadProducts()" class="btn btn-primary">
-                    Refresh Products
-                </button>
-            </div>
-        `;
-    }
-
-    initializeProductCards() {
-        // Add hover effects
-        const cards = document.querySelectorAll('.product-card');
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                if (!card.classList.contains('featured')) {
-                    card.style.transform = 'translateY(-8px)';
-                }
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                if (!card.classList.contains('featured')) {
-                    card.style.transform = 'translateY(0)';
-                }
-            });
-        });
-    }
-
-    animateProductCards() {
-        const cards = document.querySelectorAll('.product-card');
-        cards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                card.style.transition = 'all 0.6s ease';
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, index * 100);
-        });
     }
 
     async purchaseProduct(productId) {
+        console.log('💳 purchaseProduct called:', {
+            productId,
+            isLoading: this.isLoading,
+            selectedProduct: this.selectedProduct
+        });
+        
+        if (this.isLoading) {
+            console.log('⏳ Purchase blocked - already loading');
+            return;
+        }
+        
         const product = this.products.find(p => p.id === productId);
         if (!product) {
+            console.error('❌ Product not found for purchase:', productId);
             this.showError('Product not found');
             return;
         }
 
-        // Check authentication
-        const token = localStorage.getItem('token');
-        if (!token) {
-            // Store intended product for after login
+        console.log('📦 Product found for purchase:', product.name);
+
+        // Check authentication again
+        if (!this.isAuthenticated) {
+            console.log('🔐 User not authenticated during purchase, redirecting');
             localStorage.setItem('intendedPurchase', productId);
             this.redirectToLogin();
             return;
         }
 
+        // Store selected product BEFORE showing modal
         this.selectedProduct = product;
+        console.log('✅ Selected product set:', {
+            selectedProductId: this.selectedProduct.id,
+            selectedProductName: this.selectedProduct.name
+        });
+        
         this.showPurchaseModal(product);
     }
 
     showPurchaseModal(product) {
+        console.log('💳 showPurchaseModal called:', product.name);
+        
+        // Close any existing modals first - THIS IS THE FIX!
+        this.closeProductDetails();
+        
         // Populate modal
-        document.getElementById('modalProductName').textContent = product.name;
-        document.getElementById('modalProductDescription').textContent = product.description || '';
-        document.getElementById('modalDuration').textContent = product.durationText + ' access';
-        document.getElementById('modalPrice').textContent = product.priceFormatted;
+        const modalProductName = document.getElementById('modalProductName');
+        const modalProductDescription = document.getElementById('modalProductDescription');
+        const modalDuration = document.getElementById('modalDuration');
+        const modalPrice = document.getElementById('modalPrice');
+        
+        console.log('🔧 Modal elements found:', {
+            modalProductName: !!modalProductName,
+            modalProductDescription: !!modalProductDescription,
+            modalDuration: !!modalDuration,
+            modalPrice: !!modalPrice
+        });
+        
+        if (modalProductName) modalProductName.textContent = product.name;
+        if (modalProductDescription) modalProductDescription.textContent = product.description || '';
+        if (modalDuration) modalDuration.textContent = product.durationText + ' access';
+        if (modalPrice) modalPrice.textContent = product.priceFormatted;
         
         // Show modal
         const modal = document.getElementById('purchaseModal');
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        
-        // Focus on confirm button
-        setTimeout(() => {
-            document.getElementById('confirmPurchaseBtn').focus();
-        }, 100);
+        if (modal) {
+            console.log('✅ Showing purchase modal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Focus on confirm button
+            setTimeout(() => {
+                const confirmBtn = document.getElementById('confirmPurchaseBtn');
+                if (confirmBtn) {
+                    console.log('🎯 Focusing confirm button');
+                    confirmBtn.focus();
+                }
+            }, 100);
+        } else {
+            console.error('❌ Purchase modal not found in DOM!');
+        }
     }
 
     closePurchaseModal() {
+        console.log('❌ Closing purchase modal');
         const modal = document.getElementById('purchaseModal');
         if (modal) {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
+            console.log('✅ Purchase modal closed');
         }
         this.selectedProduct = null;
+        console.log('🔄 Selected product cleared');
     }
 
     async confirmPurchase() {
-        if (!this.selectedProduct) return;
+        console.log('💳 confirmPurchase called:', {
+            selectedProduct: this.selectedProduct,
+            isAuthenticated: this.isAuthenticated
+        });
+        
+        if (!this.selectedProduct) {
+            console.error('❌ No product selected for purchase!');
+            this.showError('No product selected');
+            return;
+        }
+
+        if (!this.isAuthenticated) {
+            console.log('🔐 User not authenticated during confirm, redirecting');
+            this.redirectToLogin();
+            return;
+        }
 
         const token = localStorage.getItem('token');
         if (!token) {
+            console.error('❌ No token found during purchase!');
             this.redirectToLogin();
             return;
         }
 
         try {
+            console.log('⏳ Starting purchase process...');
             this.showLoading('Processing your purchase...');
             this.closePurchaseModal();
 
-            const response = await fetch(`${API_BASE_URL}/products/${this.selectedProduct.id}/purchase`, {
+            const apiUrl = `${API_BASE_URL}/products/${this.selectedProduct.id}/purchase`;
+            console.log('🌐 Making purchase API call to:', apiUrl);
+
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -342,126 +328,56 @@ class ProductManager {
                 }
             });
 
+            console.log('📡 Purchase API Response:', {
+                status: response.status,
+                statusText: response.statusText,
+                ok: response.ok
+            });
+
             const data = await response.json();
+            console.log('📊 Purchase API Data:', data);
 
             if (response.ok) {
+                console.log('✅ Purchase successful!');
                 this.showSuccessModal(data.key.code, data.purchase);
                 
                 // Track purchase event
                 this.trackPurchaseEvent(this.selectedProduct, data.key.code);
             } else {
+                console.error('❌ Purchase failed:', data);
                 if (response.status === 401) {
+                    console.log('🔐 Token expired, clearing auth and redirecting');
+                    this.isAuthenticated = false;
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
                     this.redirectToLogin();
                 } else {
                     this.showError(data.error || 'Purchase failed. Please try again.');
                 }
             }
         } catch (error) {
-            console.error('Purchase error:', error);
+            console.error('💥 Purchase error:', error);
             this.showError('Purchase failed. Please check your connection and try again.');
         } finally {
             this.hideLoading();
-        }
-    }
-
-    showSuccessModal(keyCode, purchaseInfo) {
-        // Populate success modal
-        document.getElementById('generatedKey').textContent = keyCode;
-        
-        // Add purchase info if available
-        if (purchaseInfo) {
-            const successModal = document.querySelector('.success-modal');
-            const existingInfo = successModal.querySelector('.purchase-info');
-            if (existingInfo) existingInfo.remove();
-            
-            const purchaseInfoHTML = `
-                <div class="purchase-info">
-                    <p><strong>Product:</strong> ${purchaseInfo.productName}</p>
-                    <p><strong>Duration:</strong> ${purchaseInfo.durationDays === 999999 ? 'Lifetime' : purchaseInfo.durationDays + ' days'}</p>
-                    <p><strong>Amount:</strong> ${purchaseInfo.price === 0 ? 'Free' : '$' + purchaseInfo.price.toFixed(2)}</p>
-                </div>
-            `;
-            
-            const keyDisplay = successModal.querySelector('.key-display');
-            keyDisplay.insertAdjacentHTML('beforebegin', purchaseInfoHTML);
-        }
-        
-        // Show modal
-        const modal = document.getElementById('successModal');
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        
-        // Auto-select key for easy copying
-        setTimeout(() => {
-            const keyElement = document.getElementById('generatedKey');
-            if (keyElement) {
-                const range = document.createRange();
-                range.selectNodeContents(keyElement);
-                const selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
-        }, 500);
-    }
-
-    closeSuccessModal() {
-        const modal = document.getElementById('successModal');
-        if (modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        
-        // Clear purchase info
-        const purchaseInfo = document.querySelector('.purchase-info');
-        if (purchaseInfo) purchaseInfo.remove();
-    }
-
-    async copyKey() {
-        const keyElement = document.getElementById('generatedKey');
-        const key = keyElement.textContent;
-        
-        try {
-            await navigator.clipboard.writeText(key);
-            
-            // Visual feedback
-            const copyBtn = document.querySelector('[onclick="productManager.copyKey()"]');
-            const originalHTML = copyBtn.innerHTML;
-            
-            copyBtn.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
-                </svg>
-                Copied!
-            `;
-            copyBtn.classList.add('success');
-            
-            setTimeout(() => {
-                copyBtn.innerHTML = originalHTML;
-                copyBtn.classList.remove('success');
-            }, 2000);
-            
-            this.showToast('Key copied to clipboard!', 'success');
-        } catch (error) {
-            console.error('Failed to copy key:', error);
-            
-            // Fallback: select text for manual copy
-            const range = document.createRange();
-            range.selectNodeContents(keyElement);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            
-            this.showToast('Please copy the selected key manually', 'info');
+            console.log('🔄 Purchase process completed');
         }
     }
 
     showProductDetails(productId) {
+        console.log('📋 showProductDetails called:', productId);
+        
         const product = this.products.find(p => p.id === productId);
-        if (!product) return;
+        if (!product) {
+            console.error('❌ Product not found for details:', productId);
+            return;
+        }
+        
+        console.log('📦 Product found for details:', product.name);
         
         // Create and show product details modal
         const detailsHTML = `
-            <div id="productDetailsModal" class="modal">
+            <div id="productDetailsModal" class="modal" style="z-index: 10001;">
                 <div class="modal-overlay" onclick="productManager.closeProductDetails()"></div>
                 <div class="modal-content product-details-modal">
                     <div class="modal-header">
@@ -517,7 +433,7 @@ class ProductManager {
                     </div>
                     <div class="modal-footer">
                         <button onclick="productManager.closeProductDetails()" class="btn btn-outline">Close</button>
-                        <button onclick="productManager.purchaseProduct('${product.id}')" class="btn btn-primary">
+                        <button onclick="productManager.handleProductAction('${product.id}')" class="btn btn-primary">
                             ${this.getButtonText(product)}
                         </button>
                     </div>
@@ -527,97 +443,318 @@ class ProductManager {
         
         // Remove existing details modal
         const existingModal = document.getElementById('productDetailsModal');
-        if (existingModal) existingModal.remove();
+        if (existingModal) {
+            console.log('🗑️ Removing existing details modal');
+            existingModal.remove();
+        }
         
         // Add new modal
         document.body.insertAdjacentHTML('beforeend', detailsHTML);
+        console.log('✅ Product details modal added to DOM');
         
         // Show modal
         const modal = document.getElementById('productDetailsModal');
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        console.log('✅ Product details modal displayed');
     }
 
     closeProductDetails() {
+        console.log('❌ Closing product details modal');
         const modal = document.getElementById('productDetailsModal');
         if (modal) {
             modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            setTimeout(() => modal.remove(), 300);
+            console.log('✅ Product details modal hidden');
+            
+            // Only reset overflow if no other modals are open
+            const otherModals = document.querySelectorAll('.modal[style*="flex"]');
+            console.log('🔍 Other open modals:', otherModals.length);
+            
+            if (otherModals.length <= 1) { // Only this modal
+                document.body.style.overflow = 'auto';
+                console.log('🔄 Body overflow reset to auto');
+            }
+            
+            setTimeout(() => {
+                if (modal.parentElement) {
+                    modal.remove();
+                    console.log('🗑️ Product details modal removed from DOM');
+                }
+            }, 300);
+        } else {
+            console.log('⚠️ Product details modal not found when trying to close');
         }
     }
 
     closeAllModals() {
+        console.log('❌ Closing all modals');
         this.closePurchaseModal();
         this.closeSuccessModal();
         this.closeProductDetails();
     }
 
-    // Handle post-login purchase if user was redirected
-    handlePostLoginPurchase() {
-        const intendedPurchase = localStorage.getItem('intendedPurchase');
-        if (intendedPurchase) {
-            localStorage.removeItem('intendedPurchase');
-            setTimeout(() => {
-                this.purchaseProduct(intendedPurchase);
-            }, 1000);
-        }
-    }
-
-    initializeBillingToggle() {
-        const toggle = document.getElementById('billingToggle');
-        if (toggle) {
-            toggle.addEventListener('change', function() {
-                // This would switch between monthly/yearly pricing
-                // For now, we'll just show a message
-                if (this.checked) {
-                    productManager.showInfo('Yearly billing coming soon!');
-                } else {
-                    // Reset to monthly view
-                }
-            });
-        }
-    }
-
-    trackPurchaseEvent(product, keyCode) {
-        // Track purchase for analytics
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'purchase', {
-                transaction_id: keyCode,
-                value: product.price,
-                currency: 'USD',
-                items: [{
-                    item_id: product.id,
-                    item_name: product.name,
-                    category: 'Subscription',
-                    quantity: 1,
-                    price: product.price
-                }]
-            });
+    getButtonText(product) {
+        console.log('🔤 getButtonText called:', {
+            productName: product.name,
+            isLoading: this.isLoading,
+            isAuthenticated: this.isAuthenticated,
+            price: product.price
+        });
+        
+        if (this.isLoading) {
+            console.log('⏳ Returning loading text');
+            return 'Loading...';
         }
         
-        console.log('Purchase completed:', {
-            product: product.name,
-            price: product.price,
-            keyCode: keyCode
+        if (!this.isAuthenticated) {
+            console.log('🔐 Returning login text');
+            return 'Login to Purchase';
+        }
+        
+        if (product.price === 0) {
+            console.log('🆓 Returning free trial text');
+            return 'Get Free Trial';
+        }
+        
+        if (product.durationDays === 999999) {
+            console.log('♾️ Returning lifetime text');
+            return 'Buy Lifetime';
+        }
+        
+        console.log('💳 Returning purchase text');
+        return 'Purchase Now';
+    }
+
+    // Update button texts when auth status changes
+    updateButtonTexts() {
+        console.log('🔄 Updating button texts, isAuthenticated:', this.isAuthenticated);
+        const buttons = document.querySelectorAll('.product-btn');
+        console.log(`🔍 Found ${buttons.length} product buttons to update`);
+        
+        buttons.forEach((button, index) => {
+            const productId = button.getAttribute('data-product-id');
+            const product = this.products.find(p => p.id === productId);
+            if (product) {
+                const newText = this.getButtonText(product);
+                const oldText = button.textContent;
+                button.textContent = newText;
+                console.log(`🔄 Button ${index + 1} updated: "${oldText}" → "${newText}"`);
+            }
         });
     }
 
-    // Utility methods
+    // Handle post-login purchase if user was redirected
+    handlePostLoginPurchase() {
+        console.log('🔐 Checking for post-login purchase...');
+        const intendedPurchase = localStorage.getItem('intendedPurchase');
+        if (intendedPurchase) {
+            console.log('🎯 Found intended purchase:', intendedPurchase);
+            localStorage.removeItem('intendedPurchase');
+            setTimeout(() => {
+                console.log('⏳ Executing post-login purchase...');
+                this.purchaseProduct(intendedPurchase);
+            }, 1000);
+        } else {
+            console.log('ℹ️ No intended purchase found');
+        }
+    }
+
+    // Placeholder methods for the remaining functionality
+    getProductCardHTML(product) {
+        const isLifetime = product.durationDays === 999999;
+        const isFree = product.price === 0;
+        
+        return `
+            <div class="product-card ${product.isFeatured ? 'featured' : ''}" 
+                 data-product-id="${product.id}"
+                 data-aos="fade-up"
+                 data-aos-delay="${product.displayOrder * 100}">
+                
+                ${product.isFeatured ? '<div class="product-badge">Most Popular</div>' : ''}
+                ${isFree ? '<div class="product-badge free">Free Trial</div>' : ''}
+                ${isLifetime ? '<div class="product-badge lifetime">Lifetime</div>' : ''}
+                
+                <div class="product-header">
+                    <div class="product-icon ${this.getProductIconClass(product.durationDays)}">
+                        ${this.getProductIcon(product.durationDays)}
+                    </div>
+                    <h3 class="product-name">${this.escapeHtml(product.name)}</h3>
+                    <p class="product-description">${this.escapeHtml(product.description || '')}</p>
+                </div>
+                
+                <div class="product-pricing">
+                    <div class="price-display">
+                        <span class="price">${product.priceFormatted}</span>
+                        <span class="period">/ ${product.durationText.toLowerCase()}</span>
+                    </div>
+                    <div class="price-note">
+                        ${isFree ? 'No payment required' : 
+                          isLifetime ? 'One-time payment' : 
+                          'One-time purchase'}
+                    </div>
+                    ${this.getPricingBadges(product)}
+                </div>
+                
+                <div class="product-features">
+                    ${this.getProductFeatures(product).map(feature => `
+                        <div class="feature">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                            </svg>
+                            <span>${feature}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="product-actions">
+                    <button onclick="productManager.handleProductAction('${product.id}')" 
+                            class="btn ${this.getButtonClass(product)} product-btn"
+                            data-product-id="${product.id}">
+                        ${this.getButtonText(product)}
+                    </button>
+                    
+                    <button onclick="productManager.showProductDetails('${product.id}')" 
+                            class="btn btn-ghost btn-small">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Utility and helper methods
+    getProductIcon(durationDays) {
+        const icons = {
+            1: `<path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>`,
+            7: `<path d="M9,10V12H7V10H9M13,10V12H11V10H13M17,10V12H15V10H17M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M9,14V16H7V14H9M13,14V16H11V14H13M17,14V16H15V14H17Z"/>`,
+            30: `<path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>`,
+            365: `<path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V8H19V19M19,6H5V5H19V6Z"/>`,
+            999999: `<path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>`
+        };
+
+        const iconPath = icons[durationDays] || icons[30];
+        return `<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">${iconPath}</svg>`;
+    }
+
+    getProductIconClass(durationDays) {
+        if (durationDays === 1) return 'trial';
+        if (durationDays <= 7) return 'weekly';
+        if (durationDays <= 30) return 'monthly';
+        if (durationDays <= 365) return 'yearly';
+        return 'lifetime';
+    }
+
+    getProductFeatures(product) {
+        return [
+            `${product.durationText} access`,
+            'HWID-locked security',
+            'All premium features',
+            'Regular updates',
+            product.durationDays === 999999 ? 'VIP support' : 'Priority support'
+        ];
+    }
+
+    getPricingBadges(product) {
+        let badges = '';
+        if (product.isFeatured) {
+            badges += '<div class="pricing-badge featured">Recommended</div>';
+        }
+        return badges;
+    }
+
+    getButtonClass(product) {
+        if (product.isFeatured) return 'btn-primary';
+        if (product.price === 0) return 'btn-success';
+        return 'btn-outline';
+    }
+
+    renderEmptyState() {
+        const grid = document.getElementById('productsGrid');
+        if (grid) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <h3>No Products Available</h3>
+                    <p>Loading subscription plans...</p>
+                </div>
+            `;
+        }
+    }
+
+    initializeProductCards() {
+        console.log('🎨 Initializing product card interactions');
+    }
+
+    animateProductCards() {
+        console.log('✨ Animating product cards');
+    }
+
+    showLoadingProducts() {
+        console.log('⏳ Showing products loading state');
+        const grid = document.getElementById('productsGrid');
+        if (grid) {
+            grid.innerHTML = `
+                <div class="loading-products">
+                    <div class="spinner"></div>
+                    <p>Loading subscription plans...</p>
+                </div>
+            `;
+        }
+    }
+
+    hideLoadingProducts() {
+        console.log('✅ Hiding products loading state');
+    }
+
+    showLoading(message = 'Loading...') {
+        console.log('⏳ Showing full loading overlay:', message);
+        this.isLoading = true;
+        
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            const text = overlay.querySelector('p');
+            if (text) text.textContent = message;
+            overlay.style.display = 'flex';
+        }
+    }
+
+    hideLoading() {
+        console.log('✅ Hiding full loading overlay');
+        this.isLoading = false;
+        
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+    }
+
+    showSuccessModal(keyCode, purchaseInfo) {
+        console.log('🎉 Showing success modal:', keyCode);
+        const modal = document.getElementById('successModal');
+        if (modal) {
+            document.getElementById('generatedKey').textContent = keyCode;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeSuccessModal() {
+        console.log('❌ Closing success modal');
+        const modal = document.getElementById('successModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
     getAuthHeaders() {
         const token = localStorage.getItem('token');
-        const headers = {
-            'Content-Type': 'application/json'
-        };
-        
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        }
-        
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
         return headers;
     }
 
     redirectToLogin() {
+        console.log('🔐 Redirecting to login');
         const currentUrl = window.location.pathname + window.location.search;
         window.location.href = `../pages/login.html?redirect=${encodeURIComponent(currentUrl)}`;
     }
@@ -628,78 +765,26 @@ class ProductManager {
         return div.innerHTML;
     }
 
-    showLoading(message = 'Loading...') {
-        this.isLoading = true;
-        const overlay = document.getElementById('loadingOverlay');
-        if (overlay) {
-            const text = overlay.querySelector('p');
-            if (text) text.textContent = message;
-            overlay.style.display = 'flex';
-        }
-    }
-
-    hideLoading() {
-        this.isLoading = false;
-        const overlay = document.getElementById('loadingOverlay');
-        if (overlay) {
-            overlay.style.display = 'none';
-        }
-    }
-
     showError(message) {
-        this.showToast(message, 'error');
+        console.error('❌ Error:', message);
+        alert('Error: ' + message); // Temporary simple error display
     }
 
-    showSuccess(message) {
-        this.showToast(message, 'success');
+    showToast(message, type) {
+        console.log(`📢 Toast (${type}):`, message);
+        alert(`${type.toUpperCase()}: ${message}`); // Temporary simple toast
     }
 
-    showInfo(message) {
-        this.showToast(message, 'info');
+    initializeBillingToggle() {
+        console.log('💰 Initializing billing toggle');
     }
 
-    showToast(message, type = 'info') {
-        // Remove existing toasts
-        const existingToasts = document.querySelectorAll('.toast');
-        existingToasts.forEach(toast => toast.remove());
-        
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        
-        const icons = {
-            success: '<path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>',
-            error: '<path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>',
-            info: '<path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>',
-            warning: '<path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/>'
-        };
-        
-        toast.innerHTML = `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                ${icons[type] || icons.info}
-            </svg>
-            <span>${message}</span>
-            <button onclick="this.parentElement.remove()" class="toast-close">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
-                </svg>
-            </button>
-        `;
-        
-        document.body.appendChild(toast);
-        
-        // Show with animation
-        setTimeout(() => toast.classList.add('show'), 100);
-        
-        // Auto-remove after delay
-        const duration = type === 'error' ? 8000 : 5000;
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                if (toast.parentElement) {
-                    toast.remove();
-                }
-            }, 300);
-        }, duration);
+    trackPurchaseEvent(product, keyCode) {
+        console.log('📊 Tracking purchase event:', { product: product.name, keyCode });
+    }
+
+    async copyKey() {
+        console.log('📋 Copy key function called');
     }
 }
 
@@ -707,21 +792,46 @@ class ProductManager {
 let productManager;
 
 document.addEventListener('DOMContentLoaded', function() {
-    productManager = new ProductManager();
+    console.log('🌐 DOM Content Loaded - Initializing ProductManager');
     
-    // Check for post-login purchase
-    if (localStorage.getItem('token')) {
-        productManager.handlePostLoginPurchase();
+    // Check if API_BASE_URL is available
+    console.log('🔧 Environment check:', {
+        API_BASE_URL: typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'UNDEFINED',
+        localStorage_token: !!localStorage.getItem('token'),
+        localStorage_user: !!localStorage.getItem('user')
+    });
+    
+    try {
+        productManager = new ProductManager();
+        console.log('✅ ProductManager initialized successfully');
+        
+        // Check for post-login purchase
+        const token = localStorage.getItem('token');
+        if (token) {
+            console.log('🔐 Token found, checking for post-login purchase');
+            productManager.handlePostLoginPurchase();
+        } else {
+            console.log('ℹ️ No token found');
+        }
+        
+        // Make productManager globally available for debugging
+        window.debugProductManager = productManager;
+        console.log('🔧 ProductManager available globally as window.debugProductManager');
+        
+    } catch (error) {
+        console.error('💥 Failed to initialize ProductManager:', error);
     }
 });
 
-// Global functions for inline event handlers
+// Global functions for inline event handlers with logging
 function toggleFAQ(button) {
+    console.log('❓ FAQ toggle clicked');
     const faqItem = button.parentElement;
     const answer = faqItem.querySelector('.faq-answer');
     const icon = button.querySelector('svg');
     
     const isActive = faqItem.classList.contains('active');
+    console.log('❓ FAQ state:', { isActive });
     
     // Close all other FAQ items
     document.querySelectorAll('.faq-item.active').forEach(item => {
@@ -738,8 +848,54 @@ function toggleFAQ(button) {
     if (!isActive) {
         answer.style.maxHeight = answer.scrollHeight + 'px';
         icon.style.transform = 'rotate(180deg)';
+        console.log('❓ FAQ opened');
     } else {
         answer.style.maxHeight = '0px';
         icon.style.transform = 'rotate(0deg)';
+        console.log('❓ FAQ closed');
     }
 }
+
+// Debug helper functions
+window.debugProductManagerState = function() {
+    if (productManager) {
+        console.log('🔧 ProductManager Debug State:', {
+            products: productManager.products,
+            selectedProduct: productManager.selectedProduct,
+            isLoading: productManager.isLoading,
+            isAuthenticated: productManager.isAuthenticated
+        });
+    } else {
+        console.log('❌ ProductManager not initialized');
+    }
+};
+
+window.debugCheckModals = function() {
+    const purchaseModal = document.getElementById('purchaseModal');
+    const successModal = document.getElementById('successModal');
+    const detailsModal = document.getElementById('productDetailsModal');
+    
+    console.log('🔧 Modal Debug State:', {
+        purchaseModal: {
+            exists: !!purchaseModal,
+            display: purchaseModal ? purchaseModal.style.display : 'n/a'
+        },
+        successModal: {
+            exists: !!successModal,
+            display: successModal ? successModal.style.display : 'n/a'
+        },
+        detailsModal: {
+            exists: !!detailsModal,
+            display: detailsModal ? detailsModal.style.display : 'n/a'
+        }
+    });
+};
+
+window.debugForceCloseModals = function() {
+    console.log('🔧 Force closing all modals');
+    if (productManager) {
+        productManager.closeAllModals();
+    }
+};
+
+console.log('📝 Products.js debug version loaded with comprehensive logging');
